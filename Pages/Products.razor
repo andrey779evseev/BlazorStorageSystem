@@ -1,0 +1,42 @@
+﻿@page "/products"
+
+<PageTitle>Products</PageTitle>
+
+@using BlazorStorageSystem.Data
+@inject StorageService StorageService
+
+<h1>Products</h1>
+
+@if (_products == null)
+{
+    <p><em>Loading...</em></p>
+}
+else
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Name</th>
+            </tr>
+        </thead>
+        <tbody>
+        @foreach (var product in _products)
+        {
+            <tr>
+                <td>@product.Id</td>
+                <td>@product.Name</td>
+            </tr>
+        }
+        </tbody>
+    </table>
+}
+
+@code {
+    private List<Product>? _products;
+
+    protected override async Task OnInitializedAsync()
+    {
+        _products = await StorageService.GetProducts();
+    }
+}
