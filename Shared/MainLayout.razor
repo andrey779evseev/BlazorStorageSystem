@@ -1,19 +1,17 @@
 ﻿@inherits LayoutComponentBase
 
-<PageTitle>BlazorStorageSystem</PageTitle>
+<PageTitle>Система складского учета продуктовой базы</PageTitle>
 
-<div class="page">
-    <div class="sidebar">
-        <NavMenu />
-    </div>
-
-    <main>
-        <div class="top-row px-4">
-            <a href="https://docs.microsoft.com/aspnet/" target="_blank">About</a>
+<div class="flex h-screen">
+    <main class="flex flex-col h-full w-full">
+        <div class="flex items-center p-5 bg-gradient-to-r from-cyan-500 to-blue-500">
+            <a class="font-bold text-3xl text-white" href="">Система складского учета продуктовой базы</a>
         </div>
-
-        <article class="content px-4">
+        <article class="p-5 bg-gradient-to-r from-cyan-500 to-blue-500 h-full">
             @Body
         </article>
     </main>
+    <div class="p-5 bg-gradient-to-l from-cyan-500 to-blue-500 pt-24">
+        <NavMenu />
+    </div>
 </div>

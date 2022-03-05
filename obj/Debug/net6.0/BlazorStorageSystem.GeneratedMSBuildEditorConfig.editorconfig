@@ -27,17 +27,21 @@ build_metadata.AdditionalFiles.CssScope =
 build_metadata.AdditionalFiles.TargetPath = UGFnZXMvUHJvZHVjdHMucmF6b3I=
 build_metadata.AdditionalFiles.CssScope = 
 
+[/Users/andrew/Developer/BlazorStorageSystem/Shared/MainLayout.razor]
+build_metadata.AdditionalFiles.TargetPath = U2hhcmVkL01haW5MYXlvdXQucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = 
+
+[/Users/andrew/Developer/BlazorStorageSystem/Shared/NavMenu.razor]
+build_metadata.AdditionalFiles.TargetPath = U2hhcmVkL05hdk1lbnUucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = 
+
 [/Users/andrew/Developer/BlazorStorageSystem/_Imports.razor]
 build_metadata.AdditionalFiles.TargetPath = X0ltcG9ydHMucmF6b3I=
 build_metadata.AdditionalFiles.CssScope = 
 
-[/Users/andrew/Developer/BlazorStorageSystem/Shared/MainLayout.razor]
-build_metadata.AdditionalFiles.TargetPath = U2hhcmVkL01haW5MYXlvdXQucmF6b3I=
-build_metadata.AdditionalFiles.CssScope = b-l4ie5qx7jr
-
-[/Users/andrew/Developer/BlazorStorageSystem/Shared/NavMenu.razor]
-build_metadata.AdditionalFiles.TargetPath = U2hhcmVkL05hdk1lbnUucmF6b3I=
-build_metadata.AdditionalFiles.CssScope = b-3lbo712lq2
+[/Users/andrew/Developer/BlazorStorageSystem/Components/Loader.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50cy9Mb2FkZXIucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = b-5jnf1o7rb2
 
 [/Users/andrew/Developer/BlazorStorageSystem/Pages/Error.cshtml]
 build_metadata.AdditionalFiles.TargetPath = UGFnZXMvRXJyb3IuY3NodG1s

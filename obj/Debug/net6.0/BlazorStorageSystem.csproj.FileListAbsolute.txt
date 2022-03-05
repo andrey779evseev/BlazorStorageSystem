@@ -17,10 +17,7 @@
 /Users/andrew/Developer/BlazorStorageSystem/obj/Debug/net6.0/BlazorStorageSystem.RazorAssemblyInfo.cs
 /Users/andrew/Developer/BlazorStorageSystem/obj/Debug/net6.0/staticwebassets.build.json
 /Users/andrew/Developer/BlazorStorageSystem/obj/Debug/net6.0/staticwebassets.development.json
-/Users/andrew/Developer/BlazorStorageSystem/obj/Debug/net6.0/scopedcss/Shared/MainLayout.razor.rz.scp.css
-/Users/andrew/Developer/BlazorStorageSystem/obj/Debug/net6.0/scopedcss/Shared/NavMenu.razor.rz.scp.css
 /Users/andrew/Developer/BlazorStorageSystem/obj/Debug/net6.0/scopedcss/bundle/BlazorStorageSystem.styles.css
-/Users/andrew/Developer/BlazorStorageSystem/obj/Debug/net6.0/scopedcss/projectbundle/BlazorStorageSystem.bundle.scp.css
 /Users/andrew/Developer/BlazorStorageSystem/obj/Debug/net6.0/BlazorStorageSystem.dll
 /Users/andrew/Developer/BlazorStorageSystem/obj/Debug/net6.0/ref/BlazorStorageSystem.dll
 /Users/andrew/Developer/BlazorStorageSystem/obj/Debug/net6.0/BlazorStorageSystem.pdb
@@ -42,3 +39,5 @@
 /Users/andrew/Developer/BlazorStorageSystem/bin/Debug/net6.0/runtimes/osx/native/libmongocrypt.dylib
 /Users/andrew/Developer/BlazorStorageSystem/bin/Debug/net6.0/runtimes/win/native/mongocrypt.dll
 /Users/andrew/Developer/BlazorStorageSystem/obj/Debug/net6.0/BlazorStorageSystem.csproj.CopyComplete
+/Users/andrew/Developer/BlazorStorageSystem/obj/Debug/net6.0/scopedcss/Components/Loader.razor.rz.scp.css
+/Users/andrew/Developer/BlazorStorageSystem/obj/Debug/net6.0/scopedcss/projectbundle/BlazorStorageSystem.bundle.scp.css

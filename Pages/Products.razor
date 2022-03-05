@@ -1,31 +1,41 @@
 ﻿@page "/products"
-
-<PageTitle>Products</PageTitle>
-
 @using BlazorStorageSystem.Data
+@using BlazorStorageSystem.Components
 @inject StorageService StorageService
 
-<h1>Products</h1>
 
 @if (_products == null)
 {
-    <p><em>Loading...</em></p>
+    <Loader/>
 }
 else
 {
-    <table class="table">
+    <table class="rounded-xl bg-white/50 p-2 w-full text-gray-600">
         <thead>
             <tr>
-                <th>Id</th>
-                <th>Name</th>
+                <th class="text-left p-2 border-gray-500 border-r-2 border-b-2">№</th>
+                <th class="text-left p-2 border-gray-500 border-r-2 border-b-2">Имя</th>
+                <th class="text-left p-2 border-gray-500 border-r-2 border-b-2">Кол-во</th>
+                <th class="text-left p-2 border-gray-500 border-r-2 border-b-2">Категория</th>
+                <th class="text-left p-2 border-gray-500 border-r-2 border-b-2">Продано</th>
+                <th class="text-left p-2 border-gray-500 border-r-2 border-b-2">Продавец</th>
+                <th class="text-left p-2 border-gray-500 border-r-2 border-b-2">Производитель</th>
+                <th class="text-left p-2 border-gray-500 border-b-2">Дата окончания срока годности</th>
             </tr>
         </thead>
         <tbody>
-        @foreach (var product in _products)
+        @for (var i = 0; i < _products.Count; i++)
         {
+            var product = _products[i];
             <tr>
-                <td>@product.Id</td>
-                <td>@product.Name</td>
+                <td class="p-2 border-gray-500 border-r-2 @BorderBottom(i)">@product.Id</td>
+                <td class="p-2 border-gray-500 border-r-2 @BorderBottom(i)">@product.Name</td>
+                <td class="p-2 border-gray-500 border-r-2 @BorderBottom(i)">@product.Count</td>
+                <td class="p-2 border-gray-500 border-r-2 @BorderBottom(i)">@product.Category</td>
+                <td class="p-2 border-gray-500 border-r-2 @BorderBottom(i)">@product.Sold</td>
+                <td class="p-2 border-gray-500 border-r-2 @BorderBottom(i)">@product.Seller</td>
+                <td class="p-2 border-gray-500 border-r-2 @BorderBottom(i)">@product.Manufacturer</td>
+                <td class="p-2 border-gray-500 @BorderBottom(i)">@product.ExpirationDate.ToShortDateString()</td>
             </tr>
         }
         </tbody>
@@ -34,6 +44,11 @@ else
 
 @code {
     private List<Product>? _products;
+
+    private string BorderBottom(int i)
+    {
+        return i != _products?.Count - 1 ? "border-b-2" : "";
+    }
 
     protected override async Task OnInitializedAsync()
     {
