@@ -1,8 +1,4 @@
 
-/*html, body {*/
-/*    font-family: 'Ub';*/
-/*}*/
-
 h1:focus {
     outline: none;
 }

@@ -13,8 +13,8 @@ public class StorageService
 
     private readonly IMongoCollection<Product> _products;
 
-    public async Task<List<Product>> GetProducts()
+    public async Task<List<Product>> GetProducts(string search = "")
     {
-        return await _products.Find(_ => true).ToListAsync();
+        return await _products.Find(x => x.Name.ToLower().Contains(search.ToLower())).ToListAsync();
     }
 }

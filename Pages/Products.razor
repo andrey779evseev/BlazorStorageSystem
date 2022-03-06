@@ -4,54 +4,31 @@
 @inject StorageService StorageService
 
 
-@if (_products == null)
-{
-    <Loader/>
-}
-else
-{
-    <table class="rounded-xl bg-white/50 p-2 w-full text-gray-600">
-        <thead>
-            <tr>
-                <th class="text-left p-2 border-gray-500 border-r-2 border-b-2">№</th>
-                <th class="text-left p-2 border-gray-500 border-r-2 border-b-2">Имя</th>
-                <th class="text-left p-2 border-gray-500 border-r-2 border-b-2">Кол-во</th>
-                <th class="text-left p-2 border-gray-500 border-r-2 border-b-2">Категория</th>
-                <th class="text-left p-2 border-gray-500 border-r-2 border-b-2">Продано</th>
-                <th class="text-left p-2 border-gray-500 border-r-2 border-b-2">Продавец</th>
-                <th class="text-left p-2 border-gray-500 border-r-2 border-b-2">Производитель</th>
-                <th class="text-left p-2 border-gray-500 border-b-2">Дата окончания срока годности</th>
-            </tr>
-        </thead>
-        <tbody>
-        @for (var i = 0; i < _products.Count; i++)
-        {
-            var product = _products[i];
-            <tr>
-                <td class="p-2 border-gray-500 border-r-2 @BorderBottom(i)">@product.Id</td>
-                <td class="p-2 border-gray-500 border-r-2 @BorderBottom(i)">@product.Name</td>
-                <td class="p-2 border-gray-500 border-r-2 @BorderBottom(i)">@product.Count</td>
-                <td class="p-2 border-gray-500 border-r-2 @BorderBottom(i)">@product.Category</td>
-                <td class="p-2 border-gray-500 border-r-2 @BorderBottom(i)">@product.Sold</td>
-                <td class="p-2 border-gray-500 border-r-2 @BorderBottom(i)">@product.Seller</td>
-                <td class="p-2 border-gray-500 border-r-2 @BorderBottom(i)">@product.Manufacturer</td>
-                <td class="p-2 border-gray-500 @BorderBottom(i)">@product.ExpirationDate.ToShortDateString()</td>
-            </tr>
-        }
-        </tbody>
-    </table>
-}
+<div class="flex-col">
+    <Search OnSearch="OnSearch"></Search>
+    @if (_products == null)
+    {
+        <Loader/>
+    }
+    else
+    {
+        <Table @bind-Products="_products"></Table>
+    }
+</div>
 
 @code {
     private List<Product>? _products;
 
-    private string BorderBottom(int i)
-    {
-        return i != _products?.Count - 1 ? "border-b-2" : "";
-    }
-
     protected override async Task OnInitializedAsync()
     {
         _products = await StorageService.GetProducts();
+    }
+
+    private async void OnSearch(string search)
+    {
+        _products = null;
+        StateHasChanged();
+        _products = await StorageService.GetProducts(search);
+        StateHasChanged();
     }
 }

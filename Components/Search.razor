@@ -1,0 +1,29 @@
+@namespace BlazorStorageSystem.Components
+
+<div class="flex mb-5 items-center justify-between relative" @onkeydown="Enter">
+    <input type="text" class="border-2 border-blue-500 bg-blue-300 w-full p-2 rounded-xl text-white outline-none pl-4" @bind="Value" @oninput="e => Value = e.Value?.ToString()!"/>
+    <button class="text-white py-2 px-2 rounded-xl flex justify-center items-center text-2xl search-btn absolute right-1 top-0 border-2 border-transparent" @onclick="OnClick">
+        <ion-icon name="search-outline"></ion-icon>
+    </button>
+</div>
+
+@code
+{
+    [Parameter]
+    public EventCallback<string> OnSearch { get; set; }
+
+    private string Value { get; set; } = "";
+
+    private void OnClick()
+    {
+        OnSearch.InvokeAsync(Value);
+    }
+
+    private void Enter(KeyboardEventArgs e)
+    {
+        if (e.Code is "Enter" or "NumpadEnter")
+        {
+            OnSearch.InvokeAsync(Value);
+        }
+    }
+}

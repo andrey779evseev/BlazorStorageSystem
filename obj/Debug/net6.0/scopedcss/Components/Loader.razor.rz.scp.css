@@ -4,6 +4,7 @@
     display: flex;
     justify-content: center;
     align-items: center;
+    min-height: 500px;
 }
 .lds-roller[b-5jnf1o7rb2] {
     display: inline-block;
