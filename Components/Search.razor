@@ -1,16 +1,26 @@
 @namespace BlazorStorageSystem.Components
 
-<div class="flex mb-5 items-center justify-between relative" @onkeydown="Enter">
-    <input type="text" class="border-2 border-blue-500 bg-blue-300 w-full p-2 rounded-xl text-white outline-none pl-4" @bind="Value" @oninput="e => Value = e.Value?.ToString()!"/>
-    <button class="text-white py-2 px-2 rounded-xl flex justify-center items-center text-2xl search-btn absolute right-1 top-0 border-2 border-transparent" @onclick="OnClick">
-        <ion-icon name="search-outline"></ion-icon>
-    </button>
+<div class="flex items-center justify-between h-[44px] w-full" @onkeydown="Enter">
+    <div class="relative mr-2 w-full">
+        <input type="text" class="border-2 border-blue-500 bg-blue-300 w-full p-2 rounded-xl text-white outline-none pl-4" @bind="Value" @oninput="e => Value = e.Value?.ToString()!"/>
+        <button class="text-white py-2 px-2 rounded-xl flex justify-center items-center text-2xl search-btn absolute right-1 top-0 border-2 border-transparent" @onclick="OnClick">
+            <ion-icon name="search-outline"></ion-icon>
+        </button>
+    </div>
+    <select class="px-2 border-2 border-blue-500 bg-blue-300 text-white rounded-xl h-full outline-none" @onchange="OnSelectCategory">
+        <option value="all">Все</option>
+        <option value="fruits">Фрукты</option>
+        <option value="vegetables">Овощи</option>
+        <option value="fast_food">Фаст-фуд</option>
+    </select>
 </div>
 
 @code
 {
     [Parameter]
     public EventCallback<string> OnSearch { get; set; }
+    [Parameter]
+    public EventCallback<string> OnSearchCategory { get; set; }
 
     private string Value { get; set; } = "";
 
@@ -25,5 +35,10 @@
         {
             OnSearch.InvokeAsync(Value);
         }
+    }
+
+    public void OnSelectCategory(ChangeEventArgs e)
+    {
+        OnSearchCategory.InvokeAsync(e.Value?.ToString());
     }
 }

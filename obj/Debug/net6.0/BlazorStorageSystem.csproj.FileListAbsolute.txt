@@ -41,3 +41,4 @@
 /Users/andrew/Developer/BlazorStorageSystem/obj/Debug/net6.0/BlazorStorageSystem.csproj.CopyComplete
 /Users/andrew/Developer/BlazorStorageSystem/obj/Debug/net6.0/scopedcss/Components/Loader.razor.rz.scp.css
 /Users/andrew/Developer/BlazorStorageSystem/obj/Debug/net6.0/scopedcss/projectbundle/BlazorStorageSystem.bundle.scp.css
+/Users/andrew/Developer/BlazorStorageSystem/obj/Debug/net6.0/scopedcss/Components/Table.razor.rz.scp.css

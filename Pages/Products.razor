@@ -1,23 +1,49 @@
 ﻿@page "/products"
-@using BlazorStorageSystem.Data
 @using BlazorStorageSystem.Components
+@using BlazorStorageSystem.Models.Product
+@using BlazorStorageSystem.Services
 @inject StorageService StorageService
 
 
 <div class="flex-col">
-    <Search OnSearch="OnSearch"></Search>
+    <div class="flex items-center w-full mb-5">
+        <Search OnSearch="OnSearch" OnSearchCategory="OnSearchCategory"></Search>
+        <div 
+            @onclick="CreateProduct"
+            class="ml-2 text-2xl border-2 border-blue-500 bg-blue-300 text-white p-2 rounded-xl flex items-center">
+            <ion-icon name="add-circle-outline"></ion-icon>
+        </div>
+    </div>
     @if (_products == null)
     {
         <Loader/>
     }
     else
     {
-        <Table @bind-Products="_products"></Table>
+        <Table
+            EditProduct="EditProduct"
+            DeleteProduct="DeleteProduct"
+            Products="_products">
+        </Table>
+        @if (_visible)
+        {
+            <ModalCreateEdit
+                Close="Close"
+                Product="_product"
+                IsEditMode="_editMode">
+            </ModalCreateEdit>
+        }
     }
 </div>
 
 @code {
     private List<Product>? _products;
+
+    private string _search = "";
+    private string _category = "all";
+    private bool _visible;
+    private bool _editMode;
+    private Product? _product;
 
     protected override async Task OnInitializedAsync()
     {
@@ -26,9 +52,54 @@
 
     private async void OnSearch(string search)
     {
+        await Search(search, null);
+    }
+
+    private async void OnSearchCategory(string category)
+    {
+        await Search(null, category);
+    }
+
+    private async Task Search(string? search, string? category)
+    {
         _products = null;
         StateHasChanged();
-        _products = await StorageService.GetProducts(search);
+        if (search != null)
+            _search = search;
+        if (category != null)
+            _category = category;
+        _products = await StorageService.GetProducts(_search, _category);
         StateHasChanged();
     }
+
+    private void EditProduct(Product product)
+    {
+        _editMode = true;
+        _product = product;
+        _visible = true;
+        StateHasChanged();
+    }
+
+    private async void Close(bool changed)
+    {
+        _visible = false;
+        _product = null;
+        if (changed)
+            await Search(null, null);
+        StateHasChanged();
+    }
+
+    private async void DeleteProduct(string id)
+    {
+        await StorageService.Delete(id);
+        await Search(null, null);
+    }
+
+    private void CreateProduct()
+    {
+        _visible = true;
+        _editMode = false;
+        StateHasChanged();
+    }
+
 }

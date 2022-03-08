@@ -1,0 +1,215 @@
+@using System.ComponentModel.DataAnnotations
+@using BlazorStorageSystem.Models.Product
+@using BlazorStorageSystem.Services
+@namespace BlazorStorageSystem.Components
+@inject StorageService StorageService
+
+<div class="wrapper fixed top-0 w-full h-screen bg-indigo-900/50 left-0 z-10 flex justify-center items-center" @onclick="_ => Close.InvokeAsync(false)">
+    <div class="p-4 flex flex-col w-1/2 bg-blue-300 border-2 border-blue-500 rounded-xl" @onclick:stopPropagation="true">
+        <div class="text-2xl text-white mb-2">@Title()</div>
+        <div class="flex flex-col">
+            <EditForm Model="_model" class="flex flex-col">
+                <label class="flex items-center mb-2">
+                    <span class="text-white text-xl mr-2 w-1/3">Имя:</span>
+                    <InputText
+                        placeholder="Имя"
+                        class="w-full border-2 border-blue-500 bg-blue-300 py-2 px-4 text-white rounded-xl placeholder:text-gray-100/50 outline-none"
+                        @bind-Value="_model.Name">
+                    </InputText>
+                </label>
+                <label class="flex items-center mb-2">
+                    <span class="text-white text-xl mr-2 w-1/3">Количество:</span>
+                    <InputNumber
+                        placeholder="Количество"
+                        class="w-full border-2 border-blue-500 bg-blue-300 py-2 px-4 text-white rounded-xl placeholder:text-gray-100/50 outline-none"
+                        @bind-Value="_model.Count">
+                    </InputNumber>
+                </label>
+                <label class="flex items-center mb-2">
+                    <span class="text-white text-xl mr-2 w-1/3">Категория:</span>
+                    <InputSelect
+                        class="mb-2 border-2 border-blue-500 bg-blue-300 text-white rounded-xl outline-none px-3 py-2 w-full"
+                        @bind-Value="_model.Category">
+                        <option value="fruits">Фрукты</option>
+                        <option value="vegetables">Овощи</option>
+                        <option value="fast_food">Фаст-фуд</option>
+                    </InputSelect>
+                </label>
+                <label class="flex items-center mb-2">
+                    <span class="text-white text-xl mr-2 w-1/3">Продано:</span>
+                    <InputNumber
+                        placeholder="Продано"
+                        class="w-full border-2 border-blue-500 bg-blue-300 py-2 px-4 text-white rounded-xl placeholder:text-gray-100/50 outline-none"
+                        @bind-Value="_model.Sold">
+                    </InputNumber>
+                </label>
+                <label class="flex items-center mb-2">
+                    <span class="text-white text-xl mr-2 w-1/3">Скидка:</span>
+                    <InputNumber
+                        placeholder="Скидка"
+                        class="w-full border-2 border-blue-500 bg-blue-300 py-2 px-4 text-white rounded-xl placeholder:text-gray-100/50 outline-none"
+                        @bind-Value="_model.Sale">
+                    </InputNumber>
+                </label>
+                <label class="flex items-center mb-2">
+                    <span class="text-white text-xl mr-2 w-1/3">Продавец:</span>
+                    <InputText
+                        placeholder="Продавец"
+                        class="w-full border-2 border-blue-500 bg-blue-300 py-2 px-4 text-white rounded-xl placeholder:text-gray-100/50 outline-none"
+                        @bind-Value="_model.Seller">
+                    </InputText>
+                </label>
+                <label class="flex items-center mb-2">
+                    <span class="text-white text-xl mr-2 w-1/3">Производитель:</span>
+                    <InputText
+                        placeholder="Производитель"
+                        class="w-full border-2 border-blue-500 bg-blue-300 py-2 px-4 text-white rounded-xl placeholder:text-gray-100/50 outline-none"
+                        @bind-Value="_model.Manufacturer">
+                    </InputText>
+                </label>
+                <label class="flex items-center mb-2">
+                    <span class="text-white text-xl mr-2 w-1/3">Годен до:</span>
+                    <InputDate
+                        class="w-full border-2 border-blue-500 bg-blue-300 py-2 px-4 text-white rounded-xl placeholder:text-gray-100/50 outline-none"
+                        @bind-Value="_model.ExpirationDate">
+                    </InputDate>
+                </label>
+                <DataAnnotationsValidator/>
+                <ValidationSummary/>
+                <div class="flex w-full items-center justify-around">
+                    <button
+                        class="py-2 px-6 border-2 border-blue-500 bg-blue-300 outline-none rounded-xl text-white hover:bg-blue-500"
+                        @onclick="_ => Close.InvokeAsync(false)">
+                        Отмена
+                    </button>
+                    <button
+                        class="py-2 px-6 border-2 border-blue-500 bg-blue-300 outline-none rounded-xl text-white hover:bg-blue-500"
+                        @onclick="Save" type="submit">
+                        @ButtonSave()
+                    </button>
+                </div>
+            </EditForm>
+        </div>
+    </div>
+</div>
+
+
+<style>
+    input::-webkit-outer-spin-button,
+    input::-webkit-inner-spin-button {
+        -webkit-appearance: none;
+        margin: 0;
+    }
+</style>
+
+
+@code
+{
+    [Parameter]
+    public bool IsEditMode { get; set; }
+
+    [Parameter]
+    public EventCallback<bool> Close { get; set; }
+
+    [Parameter]
+    public Product? Product { get; set; }
+
+    protected override void OnInitialized()
+    {
+        UpdateForm();
+    }
+
+    protected override void OnParametersSet()
+    {
+        UpdateForm();
+    }
+
+    private void UpdateForm()
+    {
+        if (Product == null)
+            _model = new FormModel();
+        else
+            _model = new FormModel(
+                Product.Name,
+                Product.Count,
+                Product.Category,
+                Product.Sold,
+                Product.Sale,
+                Product.Seller,
+                Product.Manufacturer,
+                Product.ExpirationDate
+                );
+        StateHasChanged();
+    }
+
+    private class FormModel
+    {
+        public FormModel()
+        {
+        }
+
+        public FormModel(string name, int count, string category, int? sold, int? sale, string? seller, string? manufacturer, DateTime expirationDate)
+        {
+            Name = name;
+            Count = count;
+            Category = category;
+            Sold = sold;
+            Sale = sale;
+            Seller = seller;
+            Manufacturer = manufacturer;
+            ExpirationDate = expirationDate;
+        }
+
+        [Required(ErrorMessage = "Поле 'имя' обязательное")]
+        public string? Name { get; set; }
+
+        [Required(ErrorMessage = "Поле 'количество' обязательное")]
+        public int? Count { get; set; }
+
+        [Required(ErrorMessage = "Поле 'категория' обязательное")]
+        public string Category { get; set; } = "fruits";
+
+        public int? Sold { get; set; }
+        public int? Sale { get; set; }
+
+        public string? Seller { get; set; }
+
+        public string? Manufacturer { get; set; }
+
+        [Required(ErrorMessage = "Поле 'годен до' обязательное")]
+        public DateTime? ExpirationDate { get; set; }
+    }
+
+    private FormModel _model = new();
+
+    private string Title()
+    {
+        return IsEditMode ? "Редактирование продукта" : "Создание продукта";
+    }
+
+    private string ButtonSave()
+    {
+        return IsEditMode ? "Изменить" : "Создать";
+    }
+
+    private async void Save()
+    {
+        if (_model.Name == null || _model.Count == null || _model.ExpirationDate == null) return;
+        var product = new Product(
+            Product?.Id!,
+            _model.Name,
+            (int) _model.Count,
+            _model.Category,
+            _model.Sale,
+            _model.Sold,
+            _model.Seller,
+            _model.Manufacturer,
+            (DateTime) _model.ExpirationDate
+            );
+        if (IsEditMode)
+            await StorageService.Update(product);
+        else
+            await StorageService.Save(product);
+        await Close.InvokeAsync(true);
+    }
+}

@@ -1,0 +1,21 @@
+.sale-container[b-f584vmtaap] {
+    width: 50px;
+    position: absolute;
+    right: 0;
+    top: 0;
+    height: 44px;
+    overflow: hidden;
+}
+
+.sale[b-f584vmtaap] {
+    position: absolute;
+    right: -13px;
+    top: -2px;
+    width: 40px;
+    height: 20px;
+    transform: rotate(45deg);
+    font-size: 10px;
+    display: flex;
+    justify-content: center;
+    align-items: flex-end;
+}
