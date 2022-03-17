@@ -1,0 +1,99 @@
+@page "/sellers"
+@using BlazorStorageSystem.Models.Product
+@using BlazorStorageSystem.Services
+@using BlazorStorageSystem.Components
+
+@inject StorageService StorageService
+
+
+@if (_sellerDetail != null)
+{
+    <ModalSellerInfo Seller="_sellerDetail" Close="() => { _sellerDetail = null; }"></ModalSellerInfo>
+}
+
+
+@if (_sellers == null)
+{
+    <Loader/>
+}
+else
+{
+    <table class="rounded-xl bg-blue-300 p-2 w-full text-gray-600">
+        <thead>
+        <tr>
+            <th class="text-left p-2 border-blue-500 border-r-2 @BorderBottom()">Имя</th>
+            <th class="text-left p-2 border-blue-500 border-r-2 @BorderBottom()">Товара в наличии</th>
+            <th class="text-left p-2 border-blue-500 border-r-2 @BorderBottom()">Общий заработок</th>
+            <th class="text-left p-2 border-blue-500 @BorderBottom()">Последняя поставка</th>
+        </tr>
+        </thead>
+        <tbody>
+        @for (var i = 0; i < _sellers.Count; i++)
+        {
+            var seller = _sellers[i];
+            <tr class="relative overflow-hidden">
+                <td class="p-2 border-blue-500 border-r-2 @BorderBottom(i)" @onclick="() => OpenDetail(seller)">@seller.Name</td>
+                <td class="p-2 border-blue-500 border-r-2 @BorderBottom(i)" @onclick="() => OpenDetail(seller)">@seller.Count</td>
+                <td class="p-2 border-blue-500 border-r-2 @BorderBottom(i)" @onclick="() => OpenDetail(seller)">@seller.Earnings</td>
+                <td class="p-2 border-blue-500 @BorderBottom(i)" @onclick="() => OpenDetail(seller)">@seller.Last.ToShortDateString()</td>
+            </tr>
+        }
+        </tbody>
+    </table>
+}
+
+@code {
+
+    public class SellerModel
+    {
+        public SellerModel(string name, int count, int earnings, DateTime last, List<Product> products)
+        {
+            Name = name;
+            Count = count;
+            Earnings = earnings;
+            Last = last;
+            Products = products;
+        }
+
+        public string Name { get; }
+        public int Count { get; }
+        public int Earnings { get; }
+        public DateTime Last { get; }
+        public List<Product> Products { get; set; }
+    }
+
+    private List<SellerModel>? _sellers;
+    private SellerModel? _sellerDetail;
+    private List<Product>? _products;
+
+    protected override async Task OnInitializedAsync()
+    {
+        _products = await StorageService.GetProducts();
+        var arr = new List<string>();
+        foreach (var product in _products)
+        {
+            if (product.Seller != null && !arr.Contains(product.Seller))
+                arr.Add(product.Seller);
+        }
+        _sellers = new List<SellerModel>();
+        foreach (var seller in arr)
+        {
+            var count = _products.Where(x => x.Seller == seller).Sum(x => x.Count);
+            var earnings = _products.Where(x => x.Seller == seller).Sum(x => x.Price * x.Count);
+            var last = _products.Where(x => x.Seller == seller).OrderByDescending(x => x.Created).First().Created;
+            var products = _products.Where(x => x.Seller == seller).ToList();
+            _sellers.Add(new SellerModel(seller, count, earnings, last, products));
+        }
+    }
+    
+    private string BorderBottom(int i = -1)
+    {
+        return i != _sellers.Count - 1 && !(_sellers.Count == 0 && i == -1) ? "border-b-2" : "";
+    }
+
+
+    private void OpenDetail(SellerModel seller)
+    {
+        _sellerDetail = seller;
+    }
+}

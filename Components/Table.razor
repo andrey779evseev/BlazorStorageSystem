@@ -1,6 +1,11 @@
 @using BlazorStorageSystem.Models.Product
 @namespace BlazorStorageSystem.Components
 
+@if (_detailProduct != null)
+{
+    <ModalProductInfo Product="_detailProduct" Close="() => { _detailProduct = null; }"></ModalProductInfo>    
+}
+
 <table class="rounded-xl bg-blue-300 p-2 w-full text-gray-600">
     <thead>
     <tr>
@@ -8,12 +13,14 @@
         <th class="text-left p-2 border-blue-500 border-r-2 @BorderBottom()"></th>
         <th class="text-left p-2 border-blue-500 border-r-2 @BorderBottom()">№</th>
         <th class="text-left p-2 border-blue-500 border-r-2 @BorderBottom()">Имя</th>
-        <th class="text-left p-2 border-blue-500 border-r-2 @BorderBottom()">Кол-во</th>
+        <th class="text-left p-2 border-blue-500 border-r-2 @BorderBottom()">В наличии</th>
         <th class="text-left p-2 border-blue-500 border-r-2 @BorderBottom()">Категория</th>
         <th class="text-left p-2 border-blue-500 border-r-2 @BorderBottom()">Продано</th>
         <th class="text-left p-2 border-blue-500 border-r-2 @BorderBottom()">Продавец</th>
         <th class="text-left p-2 border-blue-500 border-r-2 @BorderBottom()">Производитель</th>
-        <th class="text-left p-2 border-blue-500 @BorderBottom()">Годен до</th>
+        <th class="text-left p-2 border-blue-500 border-r-2 @BorderBottom()">Годен до</th>
+        <th class="text-left p-2 border-blue-500 border-r-2 @BorderBottom()">Доставлен</th>
+        <th class="text-left p-2 border-blue-500 @BorderBottom()">Цена</th>
     </tr>
     </thead>
     <tbody>
@@ -27,14 +34,16 @@
             <td class="pt-2 text-center border-blue-500 border-r-2 text-orange-500 text-2xl h-full @BorderBottom(i)" @onclick="_ => EditProduct.InvokeAsync(product)">
                 <ion-icon name="create-outline"></ion-icon>
             </td>
-            <td class="p-2 border-blue-500 border-r-2 @BorderBottom(i)">@product.Id</td>
-            <td class="p-2 border-blue-500 border-r-2 @BorderBottom(i)">@product.Name</td>
-            <td class="p-2 border-blue-500 border-r-2 @BorderBottom(i)">@product.Count</td>
-            <td class="p-2 border-blue-500 border-r-2 @BorderBottom(i)">@Category(product.Category)</td>
-            <td class="p-2 border-blue-500 border-r-2 @BorderBottom(i)">@product.Sold</td>
+            <td class="p-2 border-blue-500 border-r-2 @BorderBottom(i)" @onclick="() => OpenDetail(product)">@product.Id</td>
+            <td class="p-2 border-blue-500 border-r-2 @BorderBottom(i)" @onclick="() => OpenDetail(product)">@product.Name</td>
+            <td class="p-2 border-blue-500 border-r-2 @BorderBottom(i)" @onclick="() => OpenDetail(product)">@product.Count</td>
+            <td class="p-2 border-blue-500 border-r-2 @BorderBottom(i)" @onclick="() => OpenDetail(product)">@Category(product.Category)</td>
+            <td class="p-2 border-blue-500 border-r-2 @BorderBottom(i)" @onclick="() => OpenDetail(product)">@product.Sold</td>
             <td class="p-2 border-blue-500 border-r-2 @BorderBottom(i)">@product.Seller</td>
-            <td class="p-2 border-blue-500 border-r-2 @BorderBottom(i)">@product.Manufacturer</td>
-            <td class="p-2 border-blue-500 @BorderBottom(i)">@product.ExpirationDate.ToShortDateString()</td>
+            <td class="p-2 border-blue-500 border-r-2 @BorderBottom(i)" @onclick="() => OpenDetail(product)">@product.Manufacturer</td>
+            <td class="p-2 border-blue-500 border-r-2 @BorderBottom(i)" @onclick="() => OpenDetail(product)">@product.ExpirationDate.ToShortDateString()</td>
+            <td class="p-2 border-blue-500 border-r-2 @BorderBottom(i)" @onclick="() => OpenDetail(product)">@product.Created.ToShortDateString()</td>
+            <td class="p-2 border-blue-500 @BorderBottom(i)">@product.Price</td>
             @if (product.Sale != null && product.Sale != 0)
             {
                 <div class="sale-container">
@@ -59,7 +68,14 @@
     
     [Parameter]
     public EventCallback<string> DeleteProduct { get; set; }
+    
+    private Product? _detailProduct;
 
+    private void OpenDetail(Product product)
+    {
+        _detailProduct = product;
+    }
+    
     private string BorderBottom(int i = -1)
     {
         return i != Products.Count - 1 && !(Products.Count == 0 && i == -1) ? "border-b-2" : "";

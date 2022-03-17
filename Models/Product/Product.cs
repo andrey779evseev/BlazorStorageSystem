@@ -6,11 +6,8 @@ namespace BlazorStorageSystem.Models.Product;
 
 public class Product
 {
-    public Product()
-    {
-        
-    }
-    public Product(string id, string name, int count, string category, int? sale, int? sold, string? seller, string? manufacturer, DateTime expirationDate)
+    public Product() { }
+    public Product(string id, string name, int count, string category, int? sale, int? sold, string? seller, string? manufacturer, DateTime expirationDate, DateTime created, int price)
     {
         Id = id;
         Name = name;
@@ -21,6 +18,8 @@ public class Product
         Seller = seller;
         Manufacturer = manufacturer;
         ExpirationDate = expirationDate;
+        Created = created;
+        Price = price;
     }
     [BsonId]
     [BsonRepresentation(BsonType.ObjectId)]
@@ -57,5 +56,11 @@ public class Product
     [BsonElement("expiration_date")]
     [BsonRepresentation(BsonType.DateTime)]
     public DateTime ExpirationDate { get; set; }
+    [BsonElement("created")]
+    [BsonRepresentation(BsonType.DateTime)]
+    public DateTime Created { get; set; }
+    [BsonElement("price")]
+    [BsonRepresentation(BsonType.Int32)]
+    public int Price { get; set; }
 }
 #pragma warning restore CS8618

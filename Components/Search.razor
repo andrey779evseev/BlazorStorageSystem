@@ -7,6 +7,11 @@
             <ion-icon name="search-outline"></ion-icon>
         </button>
     </div>
+    <select class="mr-2 px-2 border-2 border-blue-500 bg-blue-300 text-white rounded-xl h-full outline-none" @onchange="e => OnOrder.InvokeAsync(e.Value?.ToString())">
+        <option value="none">Не сортировать</option>
+        <option value="desc">По убыванию</option>
+        <option value="asc">По возрастанию</option>
+    </select>
     <select class="px-2 border-2 border-blue-500 bg-blue-300 text-white rounded-xl h-full outline-none" @onchange="OnSelectCategory">
         <option value="all">Все</option>
         <option value="fruits">Фрукты</option>
@@ -21,6 +26,8 @@
     public EventCallback<string> OnSearch { get; set; }
     [Parameter]
     public EventCallback<string> OnSearchCategory { get; set; }
+    [Parameter]
+    public EventCallback<string> OnOrder { get; set; }
 
     private string Value { get; set; } = "";
 

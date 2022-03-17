@@ -3,18 +3,19 @@
 @using BlazorStorageSystem.Models.Product
 @using BlazorStorageSystem.Services
 @inject StorageService StorageService
+@inject IJSRuntime JsRuntime
 
 
 <div class="flex-col">
     <div class="flex items-center w-full mb-5">
-        <Search OnSearch="OnSearch" OnSearchCategory="OnSearchCategory"></Search>
+        <Search OnSearch="OnSearch" OnSearchCategory="OnSearchCategory" OnOrder="Order"></Search>
         <div 
             @onclick="CreateProduct"
             class="ml-2 text-2xl border-2 border-blue-500 bg-blue-300 text-white p-2 rounded-xl flex items-center">
             <ion-icon name="add-circle-outline"></ion-icon>
         </div>
     </div>
-    @if (_products == null)
+    @if (_Products == null)
     {
         <Loader/>
     }
@@ -23,7 +24,7 @@
         <Table
             EditProduct="EditProduct"
             DeleteProduct="DeleteProduct"
-            Products="_products">
+            Products="_Products">
         </Table>
         @if (_visible)
         {
@@ -37,17 +38,32 @@
 </div>
 
 @code {
+
     private List<Product>? _products;
+    private List<Product>? _Products
+    {
+        get
+        {
+            return _orderByDesc switch
+            {
+                true => _products?.OrderByDescending(x => x.Price).ToList(),
+                false => _products?.OrderBy(x => x.Price).ToList(),
+                _ => _products
+                };
+        }
+        set => _products = value;
+    }
 
     private string _search = "";
     private string _category = "all";
     private bool _visible;
     private bool _editMode;
     private Product? _product;
+    private bool? _orderByDesc;
 
     protected override async Task OnInitializedAsync()
     {
-        _products = await StorageService.GetProducts();
+        _Products = await StorageService.GetProducts();
     }
 
     private async void OnSearch(string search)
@@ -62,13 +78,13 @@
 
     private async Task Search(string? search, string? category)
     {
-        _products = null;
+        _Products = null;
         StateHasChanged();
         if (search != null)
             _search = search;
         if (category != null)
             _category = category;
-        _products = await StorageService.GetProducts(_search, _category);
+        _Products = await StorageService.GetProducts(_search, _category);
         StateHasChanged();
     }
 
@@ -91,6 +107,8 @@
 
     private async void DeleteProduct(string id)
     {
+        var confirmed = await JsRuntime.InvokeAsync<bool>("confirm", "Вы уверены?");
+        if (!confirmed) return;
         await StorageService.Delete(id);
         await Search(null, null);
     }
@@ -102,4 +120,9 @@
         StateHasChanged();
     }
 
+    private void Order(string order)
+    {
+        if(order == "none") return;
+        _orderByDesc = order == "desc";
+    }
 }

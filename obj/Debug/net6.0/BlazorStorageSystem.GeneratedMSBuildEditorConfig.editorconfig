@@ -23,6 +23,14 @@ build_metadata.AdditionalFiles.CssScope =
 build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50cy9Nb2RhbENyZWF0ZUVkaXQucmF6b3I=
 build_metadata.AdditionalFiles.CssScope = 
 
+[/Users/andrew/Developer/BlazorStorageSystem/Components/ModalProductInfo.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50cy9Nb2RhbFByb2R1Y3RJbmZvLnJhem9y
+build_metadata.AdditionalFiles.CssScope = 
+
+[/Users/andrew/Developer/BlazorStorageSystem/Components/ModalSellerInfo.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50cy9Nb2RhbFNlbGxlckluZm8ucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = 
+
 [/Users/andrew/Developer/BlazorStorageSystem/Components/Search.razor]
 build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50cy9TZWFyY2gucmF6b3I=
 build_metadata.AdditionalFiles.CssScope = 
@@ -33,6 +41,10 @@ build_metadata.AdditionalFiles.CssScope =
 
 [/Users/andrew/Developer/BlazorStorageSystem/Pages/Products.razor]
 build_metadata.AdditionalFiles.TargetPath = UGFnZXMvUHJvZHVjdHMucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = 
+
+[/Users/andrew/Developer/BlazorStorageSystem/Pages/Sellers.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXMvU2VsbGVycy5yYXpvcg==
 build_metadata.AdditionalFiles.CssScope = 
 
 [/Users/andrew/Developer/BlazorStorageSystem/Shared/MainLayout.razor]

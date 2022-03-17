@@ -74,6 +74,21 @@
                         @bind-Value="_model.ExpirationDate">
                     </InputDate>
                 </label>
+                <label class="flex items-center mb-2">
+                    <span class="text-white text-xl mr-2 w-1/3">Доставлен:</span>
+                    <InputDate
+                        class="w-full border-2 border-blue-500 bg-blue-300 py-2 px-4 text-white rounded-xl placeholder:text-gray-100/50 outline-none"
+                        @bind-Value="_model.Created">
+                    </InputDate>
+                </label>
+                <label class="flex items-center mb-2">
+                    <span class="text-white text-xl mr-2 w-1/3">Цена:</span>
+                    <InputNumber
+                        placeholder="Цена"
+                        class="w-full border-2 border-blue-500 bg-blue-300 py-2 px-4 text-white rounded-xl placeholder:text-gray-100/50 outline-none"
+                        @bind-Value="_model.Price">
+                    </InputNumber>
+                </label>
                 <DataAnnotationsValidator/>
                 <ValidationSummary/>
                 <div class="flex w-full items-center justify-around">
@@ -137,7 +152,9 @@
                 Product.Sale,
                 Product.Seller,
                 Product.Manufacturer,
-                Product.ExpirationDate
+                Product.ExpirationDate,
+                Product.Created,
+                Product.Price
                 );
         StateHasChanged();
     }
@@ -148,7 +165,10 @@
         {
         }
 
-        public FormModel(string name, int count, string category, int? sold, int? sale, string? seller, string? manufacturer, DateTime expirationDate)
+        public FormModel(string name, int count,
+            string category, int? sold, int? sale,
+            string? seller, string? manufacturer,
+            DateTime expirationDate, DateTime created, int price)
         {
             Name = name;
             Count = count;
@@ -158,6 +178,8 @@
             Seller = seller;
             Manufacturer = manufacturer;
             ExpirationDate = expirationDate;
+            Created = created;
+            Price = price;
         }
 
         [Required(ErrorMessage = "Поле 'имя' обязательное")]
@@ -178,6 +200,12 @@
 
         [Required(ErrorMessage = "Поле 'годен до' обязательное")]
         public DateTime? ExpirationDate { get; set; }
+
+        [Required(ErrorMessage = "Поле 'доставлен' обязательное")]
+        public DateTime? Created { get; set; }
+
+        [Required(ErrorMessage = "Поле цена обязательное")]
+        public int? Price { get; set; }
     }
 
     private FormModel _model = new();
@@ -194,7 +222,13 @@
 
     private async void Save()
     {
-        if (_model.Name == null || _model.Count == null || _model.ExpirationDate == null) return;
+        if (
+            _model.Name == null ||
+            _model.Count == null ||
+            _model.ExpirationDate == null ||
+            _model.Created == null ||
+            _model.Price == null
+            ) return;
         var product = new Product(
             Product?.Id!,
             _model.Name,
@@ -204,7 +238,9 @@
             _model.Sold,
             _model.Seller,
             _model.Manufacturer,
-            (DateTime) _model.ExpirationDate
+            (DateTime) _model.ExpirationDate,
+            (DateTime) _model.Created,
+            (int) _model.Price
             );
         if (IsEditMode)
             await StorageService.Update(product);
