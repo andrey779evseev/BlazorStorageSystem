@@ -4,6 +4,7 @@
 @using BlazorStorageSystem.Services
 @namespace BlazorStorageSystem.Components
 @inject StorageService StorageService
+@inject IJSRuntime JsRuntime
 
 
 
@@ -98,7 +99,8 @@ else
 
     protected override async Task OnInitializedAsync()
     {
-        _products = await StorageService.GetProducts();
+        var products = await StorageService.GetProducts();
+        _products = products.Where(x => x.Count != 0).ToList();
     }
 
     private async void Save()
@@ -109,7 +111,15 @@ else
             _model.Product == null ||
             _products == null
             ) return;
-        var price = _products.Find(x => x.Name == _model.Product)!.Price * _model.Count;
+        var product = _products.Find(x => x.Name == _model.Product)!;
+        if (product.Count < _model.Count)
+            await JsRuntime.InvokeVoidAsync("alert", $"Не достаточно товара на складе, попытка заказать: {_model.Count}, на складе: {product.Count}");
+        else
+        {
+            product.Count = (int) (product.Count - _model.Count);
+            await StorageService.Update(product);
+        }
+        var price = product.Price * _model.Count;
         var order = new Order(
             null!, _model.Name, DateTime.Now, _model.Product, (int) _model.Count, (int) price
             );

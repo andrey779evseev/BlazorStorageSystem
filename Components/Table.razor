@@ -35,8 +35,8 @@
                 <ion-icon name="create-outline"></ion-icon>
             </td>
             <td class="p-2 border-blue-500 border-r-2 @BorderBottom(i)" @onclick="() => OpenDetail(product)">@product.Id</td>
-            <td class="p-2 border-blue-500 border-r-2 @BorderBottom(i)" @onclick="() => OpenDetail(product)">@product.Name</td>
-            <td class="p-2 border-blue-500 border-r-2 @BorderBottom(i)" @onclick="() => OpenDetail(product)">@product.Count</td>
+            <td class="p-2 border-blue-500 border-r-2 @BorderBottom(i) @Availability(i)" @onclick="() => OpenDetail(product)">@product.Name</td>
+            <td class="p-2 border-blue-500 border-r-2 @BorderBottom(i) @Availability(i)" @onclick="() => OpenDetail(product)">@product.Count</td>
             <td class="p-2 border-blue-500 border-r-2 @BorderBottom(i)" @onclick="() => OpenDetail(product)">@Category(product.Category)</td>
             <td class="p-2 border-blue-500 border-r-2 @BorderBottom(i)" @onclick="() => OpenDetail(product)">@product.Sold</td>
             <td class="p-2 border-blue-500 border-r-2 @BorderBottom(i)" @onclick="() => OpenSellerDetail.InvokeAsync(product.Seller)">@product.Seller</td>
@@ -73,6 +73,11 @@
     public EventCallback<string> OpenSellerDetail { get; set; }
     
     private Product? _detailProduct;
+
+    private string Availability(int index)
+    {
+        return Products[index].Count == 0 ? "bg-red-300" : "";
+    }
 
     private void OpenDetail(Product product)
     {
