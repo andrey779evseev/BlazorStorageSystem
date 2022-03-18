@@ -1,0 +1,66 @@
+@page "/orders"
+@using BlazorStorageSystem.Services
+@using BlazorStorageSystem.Components
+@using BlazorStorageSystem.Models.Order
+
+@inject StorageService StorageService
+
+@if (_visible)
+{
+    <ModalCreateOrder Close="async () => { _visible = false; await OnInitializedAsync();}"/>
+}
+
+@if (_orders == null)
+{
+    <Loader/>
+}
+else
+{
+    <div @onclick="() => { _visible = true; }"
+        class="border-2 border-blue-500 bg-blue-300 rounded-xl h-10 mb-2 cursor-pointer hover:bg-blue-400 transition-all text-xl text-white flex justify-center items-center">
+        Создать заказ
+    </div>
+    <table class="rounded-xl bg-blue-300 p-2 w-full text-gray-600">
+        <thead>
+        <tr>
+            <th class="text-left p-2 border-blue-500 border-r-2 @BorderBottom()">№</th>
+            <th class="text-left p-2 border-blue-500 border-r-2 @BorderBottom()">Имя</th>
+            <th class="text-left p-2 border-blue-500 border-r-2 @BorderBottom()">Дата заказа</th>
+            <th class="text-left p-2 border-blue-500 border-r-2 @BorderBottom()">Товар</th>
+            <th class="text-left p-2 border-blue-500 border-r-2 @BorderBottom()">Количество</th>
+            <th class="text-left p-2 border-blue-500 @BorderBottom()">Цена</th>
+        </tr>
+        </thead>
+        <tbody>
+        @for (var i = 0; i < _orders.Count; i++)
+        {
+            var order = _orders[i];
+            <tr class="relative overflow-hidden">
+                <td class="p-2 border-blue-500 border-r-2 @BorderBottom(i)">@order.Id</td>
+                <td class="p-2 border-blue-500 border-r-2 @BorderBottom(i)">@order.Name</td>
+                <td class="p-2 border-blue-500 border-r-2 @BorderBottom(i)">@order.Date.ToShortDateString()</td>
+                <td class="p-2 border-blue-500 border-r-2 @BorderBottom(i)">@order.ProductName</td>
+                <td class="p-2 border-blue-500 border-r-2 @BorderBottom(i)">@order.Count</td>
+                <td class="p-2 border-blue-500 @BorderBottom(i)">@order.Price</td>
+            </tr>
+        }
+        </tbody>
+    </table>
+}
+
+@code {
+
+    private List<Order>? _orders;
+    private bool _visible;
+
+    protected override async Task OnInitializedAsync()
+    {
+        _orders = await StorageService.GetOrders();
+    }
+
+    private string BorderBottom(int i = -1)
+    {
+        return i != _orders!.Count - 1 && !(_orders.Count == 0 && i == -1) ? "border-b-2" : "";
+    }
+
+}

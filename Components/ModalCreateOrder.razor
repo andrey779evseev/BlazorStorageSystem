@@ -1,0 +1,119 @@
+@using System.ComponentModel.DataAnnotations
+@using BlazorStorageSystem.Models.Order
+@using BlazorStorageSystem.Models.Product
+@using BlazorStorageSystem.Services
+@namespace BlazorStorageSystem.Components
+@inject StorageService StorageService
+
+
+
+@if (_products == null)
+{
+    <Loader/>
+}
+else
+{
+    <div class="wrapper fixed top-0 w-full h-screen bg-indigo-900/50 left-0 z-10 flex justify-center items-center" @onclick="_ => Close.InvokeAsync(false)">
+    <div class="p-4 flex flex-col w-1/2 bg-blue-300 border-2 border-blue-500 rounded-xl" @onclick:stopPropagation="true">
+        <div class="text-2xl text-white mb-2">Создание заказа</div>
+        <div class="flex flex-col">
+            <EditForm Model="_model" class="flex flex-col">
+                <label class="flex items-center mb-2">
+                    <span class="text-white text-xl mr-2 w-1/3">Имя:</span>
+                    <InputText
+                        placeholder="Имя"
+                        class="w-full border-2 border-blue-500 bg-blue-300 py-2 px-4 text-white rounded-xl placeholder:text-gray-100/50 outline-none"
+                        @bind-Value="_model.Name">
+                    </InputText>
+                </label>
+                <label class="flex items-center mb-2">
+                    <span class="text-white text-xl mr-2 w-1/3">Количество:</span>
+                    <InputNumber
+                        placeholder="Количество"
+                        class="w-full border-2 border-blue-500 bg-blue-300 py-2 px-4 text-white rounded-xl placeholder:text-gray-100/50 outline-none"
+                        @bind-Value="_model.Count">
+                    </InputNumber>
+                </label>
+                <label class="flex items-center mb-2">
+                    <span class="text-white text-xl mr-2 w-1/3">Товар:</span>
+                    <InputSelect
+                        class="mb-2 border-2 border-blue-500 bg-blue-300 text-white rounded-xl outline-none px-3 py-2 w-full"
+                        @bind-Value="_model.Product">
+                        @foreach (var product in _products)
+                        {
+                            <option value="@product.Name">@product.Name</option>
+                        }
+                    </InputSelect>
+                </label>
+                <DataAnnotationsValidator/>
+                <ValidationSummary/>
+                <div class="flex w-full items-center justify-around">
+                    <button
+                        class="py-2 px-6 border-2 border-blue-500 bg-blue-300 outline-none rounded-xl text-white hover:bg-blue-500"
+                        @onclick="_ => Close.InvokeAsync(false)">
+                        Отмена
+                    </button>
+                    <button
+                        class="py-2 px-6 border-2 border-blue-500 bg-blue-300 outline-none rounded-xl text-white hover:bg-blue-500"
+                        @onclick="Save" type="submit">
+                        Создать
+                    </button>
+                </div>
+            </EditForm>
+        </div>
+    </div>
+</div>    
+}
+
+
+<style>
+    input::-webkit-outer-spin-button,
+    input::-webkit-inner-spin-button {
+        -webkit-appearance: none;
+        margin: 0;
+    }
+</style>
+
+
+@code
+{
+    [Parameter]
+    public EventCallback<bool> Close { get; set; }
+
+    private class FormModel
+    {
+        [Required(ErrorMessage = "Поле 'имя' обязательное")]
+        public string? Name { get; set; }
+
+        [Required(ErrorMessage = "Поле 'количество' обязательное")]
+        public int? Count { get; set; }
+        
+        [Required(ErrorMessage = "Поле 'товар' обязательное")]
+        public string? Product { get; set; }
+    }
+
+    private FormModel _model = new();
+
+    private List<Product>? _products;
+
+    protected override async Task OnInitializedAsync()
+    {
+        _products = await StorageService.GetProducts();
+    }
+
+    private async void Save()
+    {
+        if (
+            _model.Name == null ||
+            _model.Count == null ||
+            _model.Product == null ||
+            _products == null
+            ) return;
+        var price = _products.Find(x => x.Name == _model.Product)!.Price * _model.Count;
+        var order = new Order(
+            null!, _model.Name, DateTime.Now, _model.Product, (int) _model.Count, (int) price
+            );
+        await StorageService.SaveOrder(order);
+        await Close.InvokeAsync(true);
+    }
+}

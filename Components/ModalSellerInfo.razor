@@ -21,6 +21,9 @@
                 <span class="white">Последняя поставка: </span>
                 <span class="white">@Seller.Last</span>
             </div>
+            <div class="flex justify-between items-center">
+                <span class="white">Товары: </span>
+            </div>
         </div>
         <div class="pl-20">
             @foreach (var product in Seller.Products)
@@ -49,10 +52,6 @@
                     <div class="flex justify-between items-center">
                         <span class="white">Продано: </span>
                         <span class="white">@product.Sold</span>
-                    </div>
-                    <div class="flex justify-between items-center">
-                        <span class="white">Продавец: </span>
-                        <span class="white">@product.Seller</span>
                     </div>
                     <div class="flex justify-between items-center">
                         <span class="white">Производитель: </span>

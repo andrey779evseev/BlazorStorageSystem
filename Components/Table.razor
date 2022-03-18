@@ -39,7 +39,7 @@
             <td class="p-2 border-blue-500 border-r-2 @BorderBottom(i)" @onclick="() => OpenDetail(product)">@product.Count</td>
             <td class="p-2 border-blue-500 border-r-2 @BorderBottom(i)" @onclick="() => OpenDetail(product)">@Category(product.Category)</td>
             <td class="p-2 border-blue-500 border-r-2 @BorderBottom(i)" @onclick="() => OpenDetail(product)">@product.Sold</td>
-            <td class="p-2 border-blue-500 border-r-2 @BorderBottom(i)">@product.Seller</td>
+            <td class="p-2 border-blue-500 border-r-2 @BorderBottom(i)" @onclick="() => OpenSellerDetail.InvokeAsync(product.Seller)">@product.Seller</td>
             <td class="p-2 border-blue-500 border-r-2 @BorderBottom(i)" @onclick="() => OpenDetail(product)">@product.Manufacturer</td>
             <td class="p-2 border-blue-500 border-r-2 @BorderBottom(i)" @onclick="() => OpenDetail(product)">@product.ExpirationDate.ToShortDateString()</td>
             <td class="p-2 border-blue-500 border-r-2 @BorderBottom(i)" @onclick="() => OpenDetail(product)">@product.Created.ToShortDateString()</td>
@@ -68,6 +68,9 @@
     
     [Parameter]
     public EventCallback<string> DeleteProduct { get; set; }
+    
+    [Parameter]
+    public EventCallback<string> OpenSellerDetail { get; set; }
     
     private Product? _detailProduct;
 

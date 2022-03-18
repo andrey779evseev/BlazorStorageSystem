@@ -12,6 +12,39 @@
   "ProjectWorkspaceState": {
     "TagHelpers": [
       {
+        "HashCode": 226455546,
+        "Kind": "Components.Component",
+        "Name": "BlazorStorageSystem.Pages.Sellers",
+        "AssemblyName": "BlazorStorageSystem",
+        "CaseSensitive": true,
+        "TagMatchingRules": [
+          {
+            "TagName": "Sellers"
+          }
+        ],
+        "Metadata": {
+          "Runtime.Name": "Components.IComponent",
+          "Common.TypeName": "BlazorStorageSystem.Pages.Sellers"
+        }
+      },
+      {
+        "HashCode": -2090876183,
+        "Kind": "Components.Component",
+        "Name": "BlazorStorageSystem.Pages.Sellers",
+        "AssemblyName": "BlazorStorageSystem",
+        "CaseSensitive": true,
+        "TagMatchingRules": [
+          {
+            "TagName": "BlazorStorageSystem.Pages.Sellers"
+          }
+        ],
+        "Metadata": {
+          "Runtime.Name": "Components.IComponent",
+          "Common.TypeName": "BlazorStorageSystem.Pages.Sellers",
+          "Components.NameMatch": "Components.FullyQualifiedNameMatch"
+        }
+      },
+      {
         "HashCode": -622280932,
         "Kind": "Components.Component",
         "Name": "BlazorStorageSystem.Pages.Index",
@@ -74,39 +107,6 @@
         "Metadata": {
           "Runtime.Name": "Components.IComponent",
           "Common.TypeName": "BlazorStorageSystem.Pages.Products",
-          "Components.NameMatch": "Components.FullyQualifiedNameMatch"
-        }
-      },
-      {
-        "HashCode": 226455546,
-        "Kind": "Components.Component",
-        "Name": "BlazorStorageSystem.Pages.Sellers",
-        "AssemblyName": "BlazorStorageSystem",
-        "CaseSensitive": true,
-        "TagMatchingRules": [
-          {
-            "TagName": "Sellers"
-          }
-        ],
-        "Metadata": {
-          "Runtime.Name": "Components.IComponent",
-          "Common.TypeName": "BlazorStorageSystem.Pages.Sellers"
-        }
-      },
-      {
-        "HashCode": -2090876183,
-        "Kind": "Components.Component",
-        "Name": "BlazorStorageSystem.Pages.Sellers",
-        "AssemblyName": "BlazorStorageSystem",
-        "CaseSensitive": true,
-        "TagMatchingRules": [
-          {
-            "TagName": "BlazorStorageSystem.Pages.Sellers"
-          }
-        ],
-        "Metadata": {
-          "Runtime.Name": "Components.IComponent",
-          "Common.TypeName": "BlazorStorageSystem.Pages.Sellers",
           "Components.NameMatch": "Components.FullyQualifiedNameMatch"
         }
       },
@@ -298,77 +298,6 @@
         "Metadata": {
           "Runtime.Name": "Components.IComponent",
           "Common.TypeName": "BlazorStorageSystem.Components.ModalProductInfo",
-          "Components.NameMatch": "Components.FullyQualifiedNameMatch"
-        }
-      },
-      {
-        "HashCode": -2030280679,
-        "Kind": "Components.Component",
-        "Name": "BlazorStorageSystem.Components.ModalSellerInfo",
-        "AssemblyName": "BlazorStorageSystem",
-        "CaseSensitive": true,
-        "TagMatchingRules": [
-          {
-            "TagName": "ModalSellerInfo"
-          }
-        ],
-        "BoundAttributes": [
-          {
-            "Kind": "Components.Component",
-            "Name": "Close",
-            "TypeName": "Microsoft.AspNetCore.Components.EventCallback<System.Boolean>",
-            "Metadata": {
-              "Common.PropertyName": "Close",
-              "Components.EventCallback": "True"
-            }
-          },
-          {
-            "Kind": "Components.Component",
-            "Name": "Seller",
-            "TypeName": "BlazorStorageSystem.Pages.Sellers.SellerModel",
-            "Metadata": {
-              "Common.PropertyName": "Seller"
-            }
-          }
-        ],
-        "Metadata": {
-          "Runtime.Name": "Components.IComponent",
-          "Common.TypeName": "BlazorStorageSystem.Components.ModalSellerInfo"
-        }
-      },
-      {
-        "HashCode": 1151319582,
-        "Kind": "Components.Component",
-        "Name": "BlazorStorageSystem.Components.ModalSellerInfo",
-        "AssemblyName": "BlazorStorageSystem",
-        "CaseSensitive": true,
-        "TagMatchingRules": [
-          {
-            "TagName": "BlazorStorageSystem.Components.ModalSellerInfo"
-          }
-        ],
-        "BoundAttributes": [
-          {
-            "Kind": "Components.Component",
-            "Name": "Close",
-            "TypeName": "Microsoft.AspNetCore.Components.EventCallback<System.Boolean>",
-            "Metadata": {
-              "Common.PropertyName": "Close",
-              "Components.EventCallback": "True"
-            }
-          },
-          {
-            "Kind": "Components.Component",
-            "Name": "Seller",
-            "TypeName": "BlazorStorageSystem.Pages.Sellers.SellerModel",
-            "Metadata": {
-              "Common.PropertyName": "Seller"
-            }
-          }
-        ],
-        "Metadata": {
-          "Runtime.Name": "Components.IComponent",
-          "Common.TypeName": "BlazorStorageSystem.Components.ModalSellerInfo",
           "Components.NameMatch": "Components.FullyQualifiedNameMatch"
         }
       },
@@ -600,6 +529,77 @@
         "Metadata": {
           "Runtime.Name": "Components.IComponent",
           "Common.TypeName": "BlazorStorageSystem.Components.Table",
+          "Components.NameMatch": "Components.FullyQualifiedNameMatch"
+        }
+      },
+      {
+        "HashCode": -2030280679,
+        "Kind": "Components.Component",
+        "Name": "BlazorStorageSystem.Components.ModalSellerInfo",
+        "AssemblyName": "BlazorStorageSystem",
+        "CaseSensitive": true,
+        "TagMatchingRules": [
+          {
+            "TagName": "ModalSellerInfo"
+          }
+        ],
+        "BoundAttributes": [
+          {
+            "Kind": "Components.Component",
+            "Name": "Close",
+            "TypeName": "Microsoft.AspNetCore.Components.EventCallback<System.Boolean>",
+            "Metadata": {
+              "Common.PropertyName": "Close",
+              "Components.EventCallback": "True"
+            }
+          },
+          {
+            "Kind": "Components.Component",
+            "Name": "Seller",
+            "TypeName": "BlazorStorageSystem.Pages.Sellers.SellerModel",
+            "Metadata": {
+              "Common.PropertyName": "Seller"
+            }
+          }
+        ],
+        "Metadata": {
+          "Runtime.Name": "Components.IComponent",
+          "Common.TypeName": "BlazorStorageSystem.Components.ModalSellerInfo"
+        }
+      },
+      {
+        "HashCode": 1151319582,
+        "Kind": "Components.Component",
+        "Name": "BlazorStorageSystem.Components.ModalSellerInfo",
+        "AssemblyName": "BlazorStorageSystem",
+        "CaseSensitive": true,
+        "TagMatchingRules": [
+          {
+            "TagName": "BlazorStorageSystem.Components.ModalSellerInfo"
+          }
+        ],
+        "BoundAttributes": [
+          {
+            "Kind": "Components.Component",
+            "Name": "Close",
+            "TypeName": "Microsoft.AspNetCore.Components.EventCallback<System.Boolean>",
+            "Metadata": {
+              "Common.PropertyName": "Close",
+              "Components.EventCallback": "True"
+            }
+          },
+          {
+            "Kind": "Components.Component",
+            "Name": "Seller",
+            "TypeName": "BlazorStorageSystem.Pages.Sellers.SellerModel",
+            "Metadata": {
+              "Common.PropertyName": "Seller"
+            }
+          }
+        ],
+        "Metadata": {
+          "Runtime.Name": "Components.IComponent",
+          "Common.TypeName": "BlazorStorageSystem.Components.ModalSellerInfo",
           "Components.NameMatch": "Components.FullyQualifiedNameMatch"
         }
       },
