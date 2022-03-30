@@ -1,69 +1,54 @@
 @using BlazorStorageSystem.Models.Product
 @using BlazorStorageSystem.Pages
+@using System.Globalization
 
 
 <div class="wrapper fixed top-0 w-full h-screen bg-indigo-900/50 left-0 z-10 flex justify-center items-center" @onclick="_ => Close.InvokeAsync(true)">
     <div class="p-4 flex flex-col w-1/2 h-3/4 overflow-y-auto  bg-blue-300 border-2 border-blue-500 rounded-xl" @onclick:stopPropagation="true">
         <div class="flex flex-col h-full justify-around text-xl text-stone-600">
             <div class="flex justify-between items-center">
-                <span class="white">Имя: </span>
+                <span class="white">ФИО: </span>
                 <span class="white">@Seller.Name</span>
             </div>
             <div class="flex justify-between items-center">
-                <span class="white">Товара в наличии: </span>
+                <span class="white">Общее количество проданных товаров: </span>
                 <span class="white">@Seller.Count</span>
             </div>
             <div class="flex justify-between items-center">
-                <span class="white">Общий заработок: </span>
-                <span class="white">@Seller.Earnings</span>
+                <span class="white">Дата последней продажи: </span>
+                <span class="white">@Seller.Last?.ToString("dd/MM/yyyy", CultureInfo.InvariantCulture)</span>
             </div>
             <div class="flex justify-between items-center">
-                <span class="white">Последняя поставка: </span>
-                <span class="white">@Seller.Last</span>
-            </div>
-            <div class="flex justify-between items-center">
-                <span class="white">Товары: </span>
+                <span class="white">Продажи: </span>
             </div>
         </div>
         <div class="pl-20">
-            @foreach (var product in Seller.Products)
+            @foreach (var order in Seller.Orders)
             {
                 <div class="mb-2 flex flex-col text-xl text-stone-600 border-2 border-indigo-500 p-2 rounded-xl">
                     <div class="flex justify-between items-center">
-                        <span class="white">№: </span>
-                        <span class="white">@product.Id</span>
+                        <span class="white">ID: </span>
+                        <span class="white">@order.Id</span>
                     </div>
                     <div class="flex justify-between items-center">
-                        <span class="white">Имя: </span>
-                        <span class="white">@product.Name</span>
+                        <span class="white">Покупатель: </span>
+                        <span class="white">@order.Name</span>
                     </div>
                     <div class="flex justify-between items-center">
-                        <span class="white">Категория: </span>
-                        <span class="white">@Category(product.Category)</span>
+                        <span class="white">Дата продажи: </span>
+                        <span class="white">@order.Date.ToString("dd/MM/yyyy", CultureInfo.InvariantCulture)</span>
                     </div>
                     <div class="flex justify-between items-center">
-                        <span class="white">Скидка: </span>
-                        <span class="white">@product.Sale %</span>
+                        <span class="white">Стоимость: </span>
+                        <span class="white">@order.Price руб.</span>
                     </div>
-                    <div class="flex justify-between items-center">
-                        <span class="white">В наличии: </span>
-                        <span class="white">@product.Count</span>
-                    </div>
-                    <div class="flex justify-between items-center">
-                        <span class="white">Продано: </span>
-                        <span class="white">@product.Sold</span>
-                    </div>
-                    <div class="flex justify-between items-center">
-                        <span class="white">Производитель: </span>
-                        <span class="white">@product.Manufacturer</span>
-                    </div>
-                    <div class="flex justify-between items-center">
-                        <span class="white">Годен до: </span>
-                        <span class="white">@product.ExpirationDate.ToShortDateString()</span>
-                    </div>
-                    <div class="flex justify-between items-center">
-                        <span class="white">Доставлено: </span>
-                        <span class="white">@product.Created.ToShortDateString()</span>
+                    <div class="flex flex-col">
+                        <p class="white">Товары: </p>
+                        @for (var i = 0; i < order.Products.Count; i++)
+                        {
+                            var product = order.Products[i];
+                            <p class="white">@(i + 1)) @product.Name @product.Count шт.</p>
+                        }
                     </div>
                 </div>
             }
@@ -79,15 +64,4 @@
 
     [Parameter]
     public Sellers.SellerModel Seller { get; set; } = null!;
-
-    private string Category(string category)
-    {
-        return category switch
-        {
-            "fruits" => "Фрукты",
-            "vegetables" => "Овощи",
-            "fast_food" => "Фаст-фуд",
-            _ => ""
-            };
-    }
 }

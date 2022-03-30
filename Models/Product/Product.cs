@@ -7,7 +7,7 @@ namespace BlazorStorageSystem.Models.Product;
 public class Product
 {
     public Product() { }
-    public Product(string id, string name, int count, string category, int? sale, int? sold, string? seller, string? manufacturer, DateTime expirationDate, DateTime created, int price)
+    public Product(string id, string name, int count, string category, int? sale, int? sold, string? manufacturer, DateTime expirationDate, DateTime created, int price)
     {
         Id = id;
         Name = name;
@@ -15,7 +15,6 @@ public class Product
         Category = category;
         Sale = sale;
         Sold = sold;
-        Seller = seller;
         Manufacturer = manufacturer;
         ExpirationDate = expirationDate;
         Created = created;
@@ -44,10 +43,6 @@ public class Product
     [BsonElement("sold")]
     [BsonRepresentation(BsonType.Int32)]
     public int? Sold { get; set; }
-
-    [BsonElement("seller")]
-    [BsonRepresentation(BsonType.String)]
-    public string? Seller { get; set; }
 
     [BsonElement("manufacturer")]
     [BsonRepresentation(BsonType.String)]

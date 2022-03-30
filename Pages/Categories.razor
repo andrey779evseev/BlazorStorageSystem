@@ -1,0 +1,73 @@
+@page "/categories"
+@using BlazorStorageSystem.Services
+@using BlazorStorageSystem.Components
+@using BlazorStorageSystem.Models.Order
+@using System.Globalization
+@using BlazorStorageSystem.Models.Category
+@inject IJSRuntime JsRuntime
+@inject StorageService StorageService
+
+@if (_visible)
+{
+    <ModalCreateCategory Close="async () => { _visible = false; await OnInitializedAsync();}"/>
+}
+
+@if (_categories == null)
+{
+    <Loader/>
+}
+else
+{
+    <div @onclick="() => { _visible = true; }"
+        class="border-2 border-blue-500 bg-blue-300 rounded-xl h-10 mb-2 cursor-pointer hover:bg-blue-400 transition-all text-xl text-white flex justify-center items-center">
+        Добавить категорию
+    </div>
+    <table class="rounded-xl bg-blue-300 p-2 w-full text-gray-600">
+        <thead>
+        <tr>
+            <th class="text-left p-2 border-blue-500 border-r-2 @BorderBottom()"></th>
+            <th class="text-left p-2 border-blue-500 border-r-2 @BorderBottom()">ID</th>
+            <th class="text-left p-2 border-blue-500 @BorderBottom()">ФИО</th>
+        </tr>
+        </thead>
+        <tbody>
+        @for (var i = 0; i < _categories.Count; i++)
+        {
+            var category = _categories[i];
+            <tr class="relative overflow-hidden">
+                <td class="pt-2 text-center border-blue-500 border-r-2 text-red-500 text-2xl h-full @BorderBottom(i)" @onclick="_ => DeleteCategory(category.Id!)">
+                    <ion-icon name="trash-outline"></ion-icon>
+                </td>
+                <td class="p-2 border-blue-500 border-r-2 @BorderBottom(i)">@category.Id</td>
+                <td class="p-2 border-blue-500 @BorderBottom(i)">@category.Name</td>
+            </tr>
+        }
+        </tbody>
+    </table>
+}
+
+@code {
+
+    private List<Category>? _categories;
+    private bool _visible;
+
+    protected override async Task OnInitializedAsync()
+    {
+        _categories = await StorageService.GetCategories();
+    }
+
+    private string BorderBottom(int i = -1)
+    {
+        return i != _categories!.Count - 1 && !(_categories.Count == 0 && i == -1) ? "border-b-2" : "";
+    }
+
+    private async Task DeleteCategory(string id)
+    {
+        var confirmed = await JsRuntime.InvokeAsync<bool>("confirm", "Вы уверены?");
+        if (!confirmed) return;
+        await StorageService.DeleteCategory(id);
+        _categories = null;
+        StateHasChanged();
+        _categories = await StorageService.GetCategories();
+    }
+}

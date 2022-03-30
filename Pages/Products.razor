@@ -6,13 +6,7 @@
 @inject IJSRuntime JsRuntime
 
 
-@if (_sellerDetail != null)
-{
-    <ModalSellerInfo Seller="_sellerDetail" Close="() => { _sellerDetail = null; }"></ModalSellerInfo>
-}
-
-
-<div class="flex-col">
+<div class="flex-col h-full">
     <div class="flex items-center w-full mb-5">
         <Search OnSearch="OnSearch" OnSearchCategory="OnSearchCategory" OnOrder="Order"></Search>
         <div 
@@ -30,7 +24,6 @@
         <Table
             EditProduct="EditProduct"
             DeleteProduct="DeleteProduct"
-            OpenSellerDetail="OpenSellerDetail"
             Products="_Products">
         </Table>
         @if (_visible)
@@ -68,21 +61,9 @@
     private Product? _product;
     private bool? _orderByDesc;
 
-    private Sellers.SellerModel? _sellerDetail;
-
     protected override async Task OnInitializedAsync()
     {
         _Products = await StorageService.GetProducts();
-    }
-
-    private void OpenSellerDetail(string seller)
-    {
-        if (_products == null) return;
-        var count = _products.Where(x => x.Seller == seller).Sum(x => x.Count);
-        var earnings = _products.Where(x => x.Seller == seller).Sum(x => x.Price * x.Count);
-        var last = _products.Where(x => x.Seller == seller).OrderByDescending(x => x.Created).First().Created;
-        var products = _products.Where(x => x.Seller == seller).ToList();
-        _sellerDetail = new Sellers.SellerModel(seller, count, earnings, last, products);
     }
 
     private async void OnSearch(string search)

@@ -1,9 +1,10 @@
 @using BlazorStorageSystem.Models.Product
+@using System.Globalization
 <div class="wrapper fixed top-0 w-full h-screen bg-indigo-900/50 left-0 z-10 flex justify-center items-center" @onclick="_ => Close.InvokeAsync(true)">
     <div class="p-4 flex flex-col w-1/2 bg-blue-300 border-2 border-blue-500 rounded-xl" @onclick:stopPropagation="true">
         <div class="flex flex-col h-full justify-around text-xl text-stone-600">
             <div class="flex justify-between items-center">
-                <span class="white">№: </span>
+                <span class="white">ID: </span>
                 <span class="white">@Product.Id</span>
             </div>
             <div class="flex justify-between items-center">
@@ -12,7 +13,7 @@
             </div>
             <div class="flex justify-between items-center">
                 <span class="white">Категория: </span>
-                <span class="white">@Category()</span>
+                <span class="white">@Product.Category</span>
             </div>
             <div class="flex justify-between items-center">
                 <span class="white">Скидка: </span>
@@ -27,20 +28,16 @@
                 <span class="white">@Product.Sold</span>
             </div>
             <div class="flex justify-between items-center">
-                <span class="white">Продавец: </span>
-                <span class="white">@Product.Seller</span>
-            </div>
-            <div class="flex justify-between items-center">
                 <span class="white">Производитель: </span>
                 <span class="white">@Product.Manufacturer</span>
             </div>
             <div class="flex justify-between items-center">
                 <span class="white">Годен до: </span>
-                <span class="white">@Product.ExpirationDate.ToShortDateString()</span>
+                <span class="white">@Product.ExpirationDate.ToString("dd/MM/yyyy", CultureInfo.InvariantCulture)</span>
             </div>
             <div class="flex justify-between items-center">
                 <span class="white">Доставлено: </span>
-                <span class="white">@Product.Created.ToShortDateString()</span>
+                <span class="white">@Product.Created.ToString("dd/MM/yyyy", CultureInfo.InvariantCulture)</span>
             </div>
         </div>
     </div>

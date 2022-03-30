@@ -1,4 +1,5 @@
 @using BlazorStorageSystem.Models.Product
+@using System.Globalization
 @namespace BlazorStorageSystem.Components
 
 @if (_detailProduct != null)
@@ -6,54 +7,54 @@
     <ModalProductInfo Product="_detailProduct" Close="() => { _detailProduct = null; }"></ModalProductInfo>    
 }
 
-<table class="rounded-xl bg-blue-300 p-2 w-full text-gray-600">
-    <thead>
-    <tr>
-        <th class="text-left p-2 border-blue-500 border-r-2 @BorderBottom()"></th>
-        <th class="text-left p-2 border-blue-500 border-r-2 @BorderBottom()"></th>
-        <th class="text-left p-2 border-blue-500 border-r-2 @BorderBottom()">№</th>
-        <th class="text-left p-2 border-blue-500 border-r-2 @BorderBottom()">Имя</th>
-        <th class="text-left p-2 border-blue-500 border-r-2 @BorderBottom()">В наличии</th>
-        <th class="text-left p-2 border-blue-500 border-r-2 @BorderBottom()">Категория</th>
-        <th class="text-left p-2 border-blue-500 border-r-2 @BorderBottom()">Продано</th>
-        <th class="text-left p-2 border-blue-500 border-r-2 @BorderBottom()">Продавец</th>
-        <th class="text-left p-2 border-blue-500 border-r-2 @BorderBottom()">Производитель</th>
-        <th class="text-left p-2 border-blue-500 border-r-2 @BorderBottom()">Годен до</th>
-        <th class="text-left p-2 border-blue-500 border-r-2 @BorderBottom()">Доставлен</th>
-        <th class="text-left p-2 border-blue-500 @BorderBottom()">Цена</th>
-    </tr>
-    </thead>
-    <tbody>
-    @for (var i = 0; i < Products.Count; i++)
-    {
-        var product = Products[i];
-        <tr class="relative overflow-hidden">
-            <td class="pt-2 text-center border-blue-500 border-r-2 text-red-500 text-2xl h-full @BorderBottom(i)" @onclick="_ => DeleteProduct.InvokeAsync(product.Id)">
-                <ion-icon name="trash-outline"></ion-icon>
-            </td>
-            <td class="pt-2 text-center border-blue-500 border-r-2 text-orange-500 text-2xl h-full @BorderBottom(i)" @onclick="_ => EditProduct.InvokeAsync(product)">
-                <ion-icon name="create-outline"></ion-icon>
-            </td>
-            <td class="p-2 border-blue-500 border-r-2 @BorderBottom(i)" @onclick="() => OpenDetail(product)">@product.Id</td>
-            <td class="p-2 border-blue-500 border-r-2 @BorderBottom(i) @Availability(i)" @onclick="() => OpenDetail(product)">@product.Name</td>
-            <td class="p-2 border-blue-500 border-r-2 @BorderBottom(i) @Availability(i)" @onclick="() => OpenDetail(product)">@product.Count</td>
-            <td class="p-2 border-blue-500 border-r-2 @BorderBottom(i)" @onclick="() => OpenDetail(product)">@Category(product.Category)</td>
-            <td class="p-2 border-blue-500 border-r-2 @BorderBottom(i)" @onclick="() => OpenDetail(product)">@product.Sold</td>
-            <td class="p-2 border-blue-500 border-r-2 @BorderBottom(i)" @onclick="() => OpenSellerDetail.InvokeAsync(product.Seller)">@product.Seller</td>
-            <td class="p-2 border-blue-500 border-r-2 @BorderBottom(i)" @onclick="() => OpenDetail(product)">@product.Manufacturer</td>
-            <td class="p-2 border-blue-500 border-r-2 @BorderBottom(i)" @onclick="() => OpenDetail(product)">@product.ExpirationDate.ToShortDateString()</td>
-            <td class="p-2 border-blue-500 border-r-2 @BorderBottom(i)" @onclick="() => OpenDetail(product)">@product.Created.ToShortDateString()</td>
-            <td class="p-2 border-blue-500 @BorderBottom(i)">@product.Price</td>
-            @if (product.Sale != null && product.Sale != 0)
-            {
-                <div class="sale-container">
-                    <div class="sale bg-gradient-to-r from-purple-500 to-pink-500 text-blue-200">@product.Sale%</div>
-                </div>
-            }
+<div class="overflow-y-scroll overflow-x-hidden max-h-[600px] rounded-xl">
+    <table class="rounded-xl bg-blue-300 p-2 w-full text-gray-600">
+        <thead>
+        <tr>
+            <th class="text-left p-2 border-blue-500 border-r-2 @BorderBottom()"></th>
+            <th class="text-left p-2 border-blue-500 border-r-2 @BorderBottom()"></th>
+            <th class="text-left p-2 border-blue-500 border-r-2 @BorderBottom()">ID</th>
+            <th class="text-left p-2 border-blue-500 border-r-2 @BorderBottom()">Наименование</th>
+            <th class="text-left p-2 border-blue-500 border-r-2 @BorderBottom()">В наличии на складе</th>
+            <th class="text-left p-2 border-blue-500 border-r-2 @BorderBottom()">Категория</th>
+            <th class="text-left p-2 border-blue-500 border-r-2 @BorderBottom()">Продано</th>
+            <th class="text-left p-2 border-blue-500 border-r-2 @BorderBottom()">Страна-производитель</th>
+            <th class="text-left p-2 border-blue-500 border-r-2 @BorderBottom()">Годен до</th>
+            <th class="text-left p-2 border-blue-500 border-r-2 @BorderBottom()">Доставлен</th>
+            <th class="text-left p-2 border-blue-500 @BorderBottom()">Цена</th>
         </tr>
-    }
-    </tbody>
-</table>
+        </thead>
+        <tbody>
+        @for (var i = 0; i < Products.Count; i++)
+        {
+            var product = Products[i];
+            <tr class="relative overflow-hidden">
+                <td class="pt-2 text-center border-blue-500 border-r-2 text-red-500 text-2xl h-full @BorderBottom(i)" @onclick="_ => DeleteProduct.InvokeAsync(product.Id)">
+                    <ion-icon name="trash-outline"></ion-icon>
+                </td>
+                <td class="pt-2 text-center border-blue-500 border-r-2 text-orange-500 text-2xl h-full @BorderBottom(i)" @onclick="_ => EditProduct.InvokeAsync(product)">
+                    <ion-icon name="create-outline"></ion-icon>
+                </td>
+                <td class="p-2 border-blue-500 border-r-2 @BorderBottom(i)" @onclick="() => OpenDetail(product)">@product.Id</td>
+                <td class="p-2 border-blue-500 border-r-2 @BorderBottom(i) @Availability(i)" @onclick="() => OpenDetail(product)">@product.Name</td>
+                <td class="p-2 border-blue-500 border-r-2 @BorderBottom(i) @Availability(i)" @onclick="() => OpenDetail(product)">@product.Count шт.</td>
+                <td class="p-2 border-blue-500 border-r-2 @BorderBottom(i)" @onclick="() => OpenDetail(product)">@product.Category</td>
+                <td class="p-2 border-blue-500 border-r-2 @BorderBottom(i)" @onclick="() => OpenDetail(product)">@product.Sold шт.</td>
+                <td class="p-2 border-blue-500 border-r-2 @BorderBottom(i)" @onclick="() => OpenDetail(product)">@product.Manufacturer</td>
+                <td class="p-2 border-blue-500 border-r-2 @BorderBottom(i)" @onclick="() => OpenDetail(product)">@product.ExpirationDate.ToString("dd/MM/yyyy", CultureInfo.InvariantCulture)</td>
+                <td class="p-2 border-blue-500 border-r-2 @BorderBottom(i)" @onclick="() => OpenDetail(product)">@product.Created.ToString("dd/MM/yyyy", CultureInfo.InvariantCulture)</td>
+                <td class="p-2 border-blue-500 @BorderBottom(i)">@product.Price руб.</td>
+                @if (product.Sale != null && product.Sale != 0)
+                {
+                    <div class="sale-container">
+                        <div class="sale bg-gradient-to-r from-purple-500 to-pink-500 text-blue-200">@product.Sale%</div>
+                    </div>
+                }
+            </tr>
+        }
+        </tbody>
+    </table>
+</div>
 
 @code
 {
@@ -68,9 +69,6 @@
     
     [Parameter]
     public EventCallback<string> DeleteProduct { get; set; }
-    
-    [Parameter]
-    public EventCallback<string> OpenSellerDetail { get; set; }
     
     private Product? _detailProduct;
 
@@ -87,17 +85,6 @@
     private string BorderBottom(int i = -1)
     {
         return i != Products.Count - 1 && !(Products.Count == 0 && i == -1) ? "border-b-2" : "";
-    }
-
-    private string Category(string category)
-    {
-        return category switch
-        {
-            "fruits" => "Фрукты",
-            "vegetables" => "Овощи",
-            "fast_food" => "Фаст-фуд",
-            _ => ""
-            };
     }
 
     private string Sale(int? sale)

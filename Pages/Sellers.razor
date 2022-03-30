@@ -2,7 +2,9 @@
 @using BlazorStorageSystem.Models.Product
 @using BlazorStorageSystem.Services
 @using BlazorStorageSystem.Components
-
+@using System.Globalization
+@using BlazorStorageSystem.Models.Order
+@inject IJSRuntime JsRuntime
 @inject StorageService StorageService
 
 
@@ -11,20 +13,27 @@
     <ModalSellerInfo Seller="_sellerDetail" Close="() => { _sellerDetail = null; }"></ModalSellerInfo>
 }
 
-
+@if (_visible)
+{
+    <ModalCreateSeller Close="async () => { _visible = false; await OnInitializedAsync();}"/>
+}
 @if (_sellers == null)
 {
     <Loader/>
 }
 else
 {
+    <div @onclick="() => { _visible = true; }"
+         class="border-2 border-blue-500 bg-blue-300 rounded-xl h-10 mb-2 cursor-pointer hover:bg-blue-400 transition-all text-xl text-white flex justify-center items-center">
+        Добавить сотрудника
+    </div>
     <table class="rounded-xl bg-blue-300 p-2 w-full text-gray-600">
         <thead>
         <tr>
-            <th class="text-left p-2 border-blue-500 border-r-2 @BorderBottom()">Имя</th>
-            <th class="text-left p-2 border-blue-500 border-r-2 @BorderBottom()">Товара в наличии</th>
-            <th class="text-left p-2 border-blue-500 border-r-2 @BorderBottom()">Общий заработок</th>
-            <th class="text-left p-2 border-blue-500 @BorderBottom()">Последняя поставка</th>
+            <th class="text-left p-2 border-blue-500 border-r-2 @BorderBottom()"></th>
+            <th class="text-left p-2 border-blue-500 border-r-2 @BorderBottom()">ФИО</th>
+            <th class="text-left p-2 border-blue-500 border-r-2 @BorderBottom()">Общее количество проданных товаров</th>
+            <th class="text-left p-2 border-blue-500 @BorderBottom()">Дата последней продажи</th>
         </tr>
         </thead>
         <tbody>
@@ -32,10 +41,12 @@ else
         {
             var seller = _sellers[i];
             <tr class="relative overflow-hidden">
+                <td class="pt-2 text-center border-blue-500 border-r-2 text-red-500 text-2xl h-full @BorderBottom(i)" @onclick="_ => DeleteSeller(seller.Id)">
+                    <ion-icon name="trash-outline"></ion-icon>
+                </td>
                 <td class="p-2 border-blue-500 border-r-2 @BorderBottom(i)" @onclick="() => OpenDetail(seller)">@seller.Name</td>
-                <td class="p-2 border-blue-500 border-r-2 @BorderBottom(i)" @onclick="() => OpenDetail(seller)">@seller.Count</td>
-                <td class="p-2 border-blue-500 border-r-2 @BorderBottom(i)" @onclick="() => OpenDetail(seller)">@seller.Earnings</td>
-                <td class="p-2 border-blue-500 @BorderBottom(i)" @onclick="() => OpenDetail(seller)">@seller.Last.ToShortDateString()</td>
+                <td class="p-2 border-blue-500 border-r-2 @BorderBottom(i)" @onclick="() => OpenDetail(seller)">@seller.Count шт.</td>
+                <td class="p-2 border-blue-500 @BorderBottom(i)" @onclick="() => OpenDetail(seller)">@seller.Last?.ToString("dd/MM/yyyy", CultureInfo.InvariantCulture)</td>
             </tr>
         }
         </tbody>
@@ -46,44 +57,52 @@ else
 
     public class SellerModel
     {
-        public SellerModel(string name, int count, int earnings, DateTime last, List<Product> products)
+        public SellerModel(string name, int count, DateTime? last, List<Order> orders, string id)
         {
             Name = name;
             Count = count;
-            Earnings = earnings;
             Last = last;
-            Products = products;
+            Orders = orders;
+            Id = id;
         }
-
+        public string Id { get; }
         public string Name { get; }
         public int Count { get; }
-        public int Earnings { get; }
-        public DateTime Last { get; }
-        public List<Product> Products { get; set; }
+        public DateTime? Last { get; }
+        public List<Order> Orders { get; set; }
     }
 
     private List<SellerModel>? _sellers;
     private SellerModel? _sellerDetail;
-    private List<Product>? _products;
+    private bool _visible;
 
     protected override async Task OnInitializedAsync()
     {
-        _products = await StorageService.GetProducts();
-        var arr = new List<string>();
-        foreach (var product in _products)
-        {
-            if (product.Seller != null && !arr.Contains(product.Seller))
-                arr.Add(product.Seller);
-        }
+        var sellers = await StorageService.GetSellers();
+        var orders = await StorageService.GetOrders();
         _sellers = new List<SellerModel>();
-        foreach (var seller in arr)
+        foreach (var seller in sellers)
         {
-            var count = _products.Where(x => x.Seller == seller).Sum(x => x.Count);
-            var earnings = _products.Where(x => x.Seller == seller).Sum(x => x.Price * x.Count);
-            var last = _products.Where(x => x.Seller == seller).OrderByDescending(x => x.Created).First().Created;
-            var products = _products.Where(x => x.Seller == seller).ToList();
-            _sellers.Add(new SellerModel(seller, count, earnings, last, products));
+            _sellers.Add(
+                new SellerModel(
+                    seller.Name,
+                    orders.Count(o => o.Seller == seller.Name),
+                    orders.Where(o => o.Seller == seller.Name).MaxBy(o => o.Date)?.Date,
+                    orders.Where(o => o.Seller == seller.Name).ToList(),
+                    seller.Id!
+                    )
+                );
         }
+    }
+    
+    private async Task DeleteSeller(string id)
+    {
+        var confirmed = await JsRuntime.InvokeAsync<bool>("confirm", "Вы уверены?");
+        if (!confirmed) return;
+        await StorageService.DeleteSeller(id);
+        _sellers = null;
+        StateHasChanged();
+        await OnInitializedAsync();
     }
     
     private string BorderBottom(int i = -1)
