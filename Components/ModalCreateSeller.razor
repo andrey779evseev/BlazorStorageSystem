@@ -26,6 +26,22 @@
                             @bind-Value="_model.Name">
                         </InputText>
                     </label>
+                    <label class="flex items-center mb-2">
+                        <span class="text-white text-xl mr-2 w-1/3">Адрес:</span>
+                        <InputText
+                            placeholder="Адрес"
+                            class="w-full border-2 border-blue-500 bg-blue-300 py-2 px-4 text-white rounded-xl placeholder:text-gray-100/50 outline-none"
+                            @bind-Value="_model.Address">
+                        </InputText>
+                    </label>
+                    <label class="flex items-center mb-2">
+                        <span class="text-white text-xl mr-2 w-1/3">Телефон:</span>
+                        <InputText
+                            placeholder="Телефон"
+                            class="w-full border-2 border-blue-500 bg-blue-300 py-2 px-4 text-white rounded-xl placeholder:text-gray-100/50 outline-none"
+                            @bind-Value="_model.Phone">
+                        </InputText>
+                    </label>
                     <DataAnnotationsValidator/>
                     <ValidationSummary/>
                     <div class="flex w-full items-center justify-around">
@@ -55,6 +71,10 @@
     {
         [Required(ErrorMessage = "Поле 'ФИО' обязательное")]
         public string? Name { get; set; }
+        [Required(ErrorMessage = "Поле 'Адрес' обязательное")]
+        public string? Address { get; set; }
+        [Required(ErrorMessage = "Поле 'Телефон' обязательное")]
+        public string? Phone { get; set; }
     }
 
     private FormModel _model = new();
@@ -70,13 +90,15 @@
     {
         if (
             _model.Name == null ||
-            _sellers == null
+            _sellers == null ||
+            _model.Address == null ||
+            _model.Phone == null
             ) return;
         if (_sellers.Any(x => x.Name == _model.Name))
             await JsRuntime.InvokeVoidAsync("alert", $"Такая категория уже существует: {_model.Name}");
         else
         {
-            await StorageService.SaveSeller(new Seller(null, _model.Name));
+            await StorageService.SaveSeller(new Seller(null, _model.Name, _model.Address, _model.Phone));
         }
         await Close.InvokeAsync(true);
     }

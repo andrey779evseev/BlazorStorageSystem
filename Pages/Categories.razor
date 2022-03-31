@@ -26,8 +26,7 @@ else
         <thead>
         <tr>
             <th class="text-left p-2 border-blue-500 border-r-2 @BorderBottom()"></th>
-            <th class="text-left p-2 border-blue-500 border-r-2 @BorderBottom()">ID</th>
-            <th class="text-left p-2 border-blue-500 @BorderBottom()">ФИО</th>
+            <th class="text-left p-2 border-blue-500 @BorderBottom()">Наименование</th>
         </tr>
         </thead>
         <tbody>
@@ -38,7 +37,6 @@ else
                 <td class="pt-2 text-center border-blue-500 border-r-2 text-red-500 text-2xl h-full @BorderBottom(i)" @onclick="_ => DeleteCategory(category.Id!)">
                     <ion-icon name="trash-outline"></ion-icon>
                 </td>
-                <td class="p-2 border-blue-500 border-r-2 @BorderBottom(i)">@category.Id</td>
                 <td class="p-2 border-blue-500 @BorderBottom(i)">@category.Name</td>
             </tr>
         }

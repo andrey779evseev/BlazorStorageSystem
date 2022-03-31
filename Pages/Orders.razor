@@ -25,9 +25,9 @@ else
         <thead>
         <tr>
             <th class="text-left p-2 border-blue-500 border-r-2 @BorderBottom()"></th>
-            <th class="text-left p-2 border-blue-500 border-r-2 @BorderBottom()">ID</th>
             <th class="text-left p-2 border-blue-500 border-r-2 @BorderBottom()">ФИО</th>
             <th class="text-left p-2 border-blue-500 border-r-2 @BorderBottom()">Дата заказа</th>
+            <th class="text-left p-2 border-blue-500 border-r-2 @BorderBottom()">Продавец</th>
             <th class="text-left p-2 border-blue-500 border-r-2 @BorderBottom()">Стоимость</th>
             <th class="text-left p-2 border-blue-500 @BorderBottom()">Товары</th>
         </tr>
@@ -40,9 +40,9 @@ else
                 <td class="pt-2 text-center border-blue-500 border-r-2 text-red-500 text-2xl h-full @BorderBottom(i)" @onclick="_ => DeleteOrder(order.Id)">
                     <ion-icon name="trash-outline"></ion-icon>
                 </td>
-                <td class="p-2 border-blue-500 border-r-2 @BorderBottom(i)">@order.Id</td>
                 <td class="p-2 border-blue-500 border-r-2 @BorderBottom(i)">@order.Name</td>
                 <td class="p-2 border-blue-500 border-r-2 @BorderBottom(i)">@order.Date.ToString("dd/MM/yyyy", CultureInfo.InvariantCulture)</td>
+                <td class="p-2 border-blue-500 border-r-2 @BorderBottom(i)">@order.Seller</td>
                 <td class="p-2 border-blue-500 border-r-2 @BorderBottom(i)">@order.Price руб.</td>
                 <td class="p-2 border-blue-500 @BorderBottom(i)">
                     @for (var j = 0; j < order.Products.Count; j++)
@@ -51,7 +51,7 @@ else
                         <div class="flex justify-between items-center">
                             <div class="w-1/6">@(j + 1))</div>
                             <div class="w-3/6">@product.Name</div>
-                            <div class="w-2/6">@product.Count шт.</div>
+                            <div class="w-2/6">@product.Count кг.</div>
                         </div>
                     }
                 </td>
@@ -87,6 +87,7 @@ else
             var products = await StorageService.GetProducts();
             var product = products.First(x => x.Name == prod.Name);
             product.Sold -= prod.Count;
+            product.Count += prod.Count;
             await StorageService.Update(product);
         }
         _orders = null;

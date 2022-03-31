@@ -45,15 +45,7 @@
                         </InputSelect>
                     </label>
                     <label class="flex items-center mb-2">
-                        <span class="text-white text-xl mr-2 w-1/3">Скидка:</span>
-                        <InputNumber
-                            placeholder="Скидка"
-                            class="w-full border-2 border-blue-500 bg-blue-300 py-2 px-4 text-white rounded-xl placeholder:text-gray-100/50 outline-none"
-                            @bind-Value="_model.Sale">
-                        </InputNumber>
-                    </label>
-                    <label class="flex items-center mb-2">
-                        <span class="text-white text-xl mr-2 w-1/3">Страна-роизводитель:</span>
+                        <span class="text-white text-xl mr-2 w-1/3">Страна-производитель:</span>
                         <InputText
                             placeholder="Производитель"
                             class="w-full border-2 border-blue-500 bg-blue-300 py-2 px-4 text-white rounded-xl placeholder:text-gray-100/50 outline-none"
@@ -75,7 +67,7 @@
                         </InputDate>
                     </label>
                     <label class="flex items-center mb-2">
-                        <span class="text-white text-xl mr-2 w-1/3">Цена (в рублях за штуку):</span>
+                        <span class="text-white text-xl mr-2 w-1/3">Цена (в рублях за килограмм):</span>
                         <InputNumber
                             placeholder="Цена"
                             class="w-full border-2 border-blue-500 bg-blue-300 py-2 px-4 text-white rounded-xl placeholder:text-gray-100/50 outline-none"
@@ -145,7 +137,6 @@
                 Product.Count,
                 Product.Category,
                 Product.Sold,
-                Product.Sale,
                 Product.Manufacturer,
                 Product.ExpirationDate,
                 Product.Created,
@@ -161,14 +152,13 @@
         }
 
         public FormModel(string name, int count,
-            string category, int? sold, int? sale, string? manufacturer,
+            string category, int? sold, string? manufacturer,
             DateTime expirationDate, DateTime created, int price)
         {
             Name = name;
             Count = count;
             Category = category;
             Sold = (int) sold;
-            Sale = sale;
             Manufacturer = manufacturer;
             ExpirationDate = expirationDate;
             Created = created;
@@ -185,7 +175,6 @@
         public string Category { get; set; } = "fruits";
 
         public int Sold { get; set; } = 0;
-        public int? Sale { get; set; }
 
         public string? Manufacturer { get; set; }
 
@@ -225,12 +214,11 @@
             _model.Name,
             (int) _model.Count,
             _model.Category,
-            _model.Sale,
             _model.Sold,
             _model.Manufacturer,
             (DateTime) _model.ExpirationDate,
             (DateTime) _model.Created,
-            (int) _model.Price - ((int) _model.Price / 100 * _model.Sale ?? 0)
+            (int) _model.Price
             );
         if (IsEditMode)
             await StorageService.Update(product);

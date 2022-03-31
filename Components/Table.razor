@@ -13,7 +13,6 @@
         <tr>
             <th class="text-left p-2 border-blue-500 border-r-2 @BorderBottom()"></th>
             <th class="text-left p-2 border-blue-500 border-r-2 @BorderBottom()"></th>
-            <th class="text-left p-2 border-blue-500 border-r-2 @BorderBottom()">ID</th>
             <th class="text-left p-2 border-blue-500 border-r-2 @BorderBottom()">Наименование</th>
             <th class="text-left p-2 border-blue-500 border-r-2 @BorderBottom()">В наличии на складе</th>
             <th class="text-left p-2 border-blue-500 border-r-2 @BorderBottom()">Категория</th>
@@ -21,7 +20,7 @@
             <th class="text-left p-2 border-blue-500 border-r-2 @BorderBottom()">Страна-производитель</th>
             <th class="text-left p-2 border-blue-500 border-r-2 @BorderBottom()">Годен до</th>
             <th class="text-left p-2 border-blue-500 border-r-2 @BorderBottom()">Доставлен</th>
-            <th class="text-left p-2 border-blue-500 @BorderBottom()">Цена</th>
+            <th class="text-left p-2 border-blue-500 @BorderBottom()">Цена за штуку</th>
         </tr>
         </thead>
         <tbody>
@@ -35,21 +34,14 @@
                 <td class="pt-2 text-center border-blue-500 border-r-2 text-orange-500 text-2xl h-full @BorderBottom(i)" @onclick="_ => EditProduct.InvokeAsync(product)">
                     <ion-icon name="create-outline"></ion-icon>
                 </td>
-                <td class="p-2 border-blue-500 border-r-2 @BorderBottom(i)" @onclick="() => OpenDetail(product)">@product.Id</td>
                 <td class="p-2 border-blue-500 border-r-2 @BorderBottom(i) @Availability(i)" @onclick="() => OpenDetail(product)">@product.Name</td>
-                <td class="p-2 border-blue-500 border-r-2 @BorderBottom(i) @Availability(i)" @onclick="() => OpenDetail(product)">@product.Count шт.</td>
+                <td class="p-2 border-blue-500 border-r-2 @BorderBottom(i) @Availability(i)" @onclick="() => OpenDetail(product)">@product.Count кг.</td>
                 <td class="p-2 border-blue-500 border-r-2 @BorderBottom(i)" @onclick="() => OpenDetail(product)">@product.Category</td>
-                <td class="p-2 border-blue-500 border-r-2 @BorderBottom(i)" @onclick="() => OpenDetail(product)">@product.Sold шт.</td>
+                <td class="p-2 border-blue-500 border-r-2 @BorderBottom(i)" @onclick="() => OpenDetail(product)">@product.Sold кг.</td>
                 <td class="p-2 border-blue-500 border-r-2 @BorderBottom(i)" @onclick="() => OpenDetail(product)">@product.Manufacturer</td>
                 <td class="p-2 border-blue-500 border-r-2 @BorderBottom(i)" @onclick="() => OpenDetail(product)">@product.ExpirationDate.ToString("dd/MM/yyyy", CultureInfo.InvariantCulture)</td>
                 <td class="p-2 border-blue-500 border-r-2 @BorderBottom(i)" @onclick="() => OpenDetail(product)">@product.Created.ToString("dd/MM/yyyy", CultureInfo.InvariantCulture)</td>
                 <td class="p-2 border-blue-500 @BorderBottom(i)">@product.Price руб.</td>
-                @if (product.Sale != null && product.Sale != 0)
-                {
-                    <div class="sale-container">
-                        <div class="sale bg-gradient-to-r from-purple-500 to-pink-500 text-blue-200">@product.Sale%</div>
-                    </div>
-                }
             </tr>
         }
         </tbody>
